@@ -192,10 +192,10 @@ int InterpreterLog(const string& logText)
 #endif
 
 	PrintColored("[" + to_string(Hour) + ":" + to_string(Min) + ":" + to_string(Sec) + "] ", blueFGColor, "", true);
-	PrintColored("ZSharp: ", yellowFGColor, "", true);
+	PrintColored("HolyZ: ", yellowFGColor, "", true);
 	PrintColored(escaped(logText), greenFGColor, "", true);
 	cout << std::endl;
-	//cout << "\x1B[34m[" + to_string(Hour) + ":" + to_string(Min) + ":" + to_string(Sec) + "] \x1B[33mZSharp: \x1B[32m" << logText << "\033[0m\t\t" << endl;
+	//cout << "\x1B[34m[" + to_string(Hour) + ":" + to_string(Min) + ":" + to_string(Sec) + "] \x1B[33mHolyZ: \x1B[32m" << logText << "\033[0m\t\t" << endl;
 	return 1;
 }
 
@@ -229,13 +229,13 @@ int LogCriticalError(const string& errorText)
 #endif
 
 	PrintColored("[" + to_string(Hour) + ":" + to_string(Min) + ":" + to_string(Sec) + "] ", blueFGColor, "", true);
-	PrintColored("ZSharp: ", yellowFGColor, "", true);
+	PrintColored("HolyZ: ", yellowFGColor, "", true);
 	PrintColored(escaped(errorText), redFGColor, "", true);
 	cerr << std::endl;
 	InterpreterLog("Press Enter to Exit...");
 	cin.ignore();
 	exit(1);
-	//cerr << "\x1B[34m[" + to_string(Hour) + ":" + to_string(Min) + ":" + to_string(Sec) + "] \x1B[33mZSharp: \x1B[31mERROR: " << errorText << "\033[0m\t\t" << endl;
+	//cerr << "\x1B[34m[" + to_string(Hour) + ":" + to_string(Min) + ":" + to_string(Sec) + "] \x1B[33mHolyZ: \x1B[31mERROR: " << errorText << "\033[0m\t\t" << endl;
 	//exit(EXIT_FAILURE);
 	return 2;
 }

@@ -1,31 +1,31 @@
-<img src="https://raw.githubusercontent.com/sam-astro/Z-Sharp/master/ExtraResources/ZS-Gem-Icon-Small.png"/><img src="https://raw.githubusercontent.com/sam-astro/Z-Sharp/master/ExtraResources/ZS-Logo-Light-Small.png"/>
+<img src="https://raw.githubusercontent.com/sam-astro/Holy-Z/master/ExtraResources/ZS-Gem-Icon-Small.png"/><img src="https://raw.githubusercontent.com/sam-astro/Holy-Z/master/ExtraResources/ZS-Logo-Light-Small.png"/>
 
-> Z-Sharp is no longer in development! This project was never meant to go beyond the scope of a simple thing I could make pong in, yet people continue to ask for features and fixes, and I continue to oblige. So sadly, even though this was a cool project in which I learned a lot, it will be ending now. I will eventually make some docs and standards for the syntax, and will still leave this repository open. This way anybody can make their own interpreter or compiler for it. I will also still accept pull requests for any changes to this repository.
+> Holy Z is no longer in development! This project was never meant to go beyond the scope of a simple thing I could make pong in, yet people continue to ask for features and fixes, and I continue to oblige. So sadly, even though this was a cool project in which I learned a lot, it will be ending now. I will eventually make some docs and standards for the syntax, and will still leave this repository open. This way anybody can make their own interpreter or compiler for it. I will also still accept pull requests for any changes to this repository.
 
 ## Introduction
-Z-Sharp is a custom programming language I made because I don't like c++ very much (Z-Sharp's interpreter is written in c++ though). Z-Sharp scripts have the file extension .ZS. The base syntax and formatting I would say is quite similar to C# or Python, but differs as task complexity increases. It also has support for graphics using SDL2.
+Holy Z is a custom programming language I made because I don't like c++ very much (Holy Z's interpreter is written in c++ though). Holy Z scripts have the file extension .ZS. The base syntax and formatting I would say is quite similar to C# or Python, but differs as task complexity increases. It also has support for graphics using SDL2.
 
-Before using Z#:
-There is ***no documentation***, ***strings*** barely work, ***performance*** isn't great, the syntax is ***very specific***, and most errors just cause it to ***crash without warning***. I am just a *single developer* working on this during my free time; between school, other projects, and YouTube. Z-Sharp will most likely never be finished, since it was really supposed to end when the video was published about it.
+Before using Z+:
+There is ***no documentation***, ***strings*** barely work, ***performance*** isn't great, the syntax is ***very specific***, and most errors just cause it to ***crash without warning***. I am just a *single developer* working on this during my free time; between school, other projects, and YouTube. Holy Z will most likely never be finished, since it was really supposed to end when the video was published about it.
 If you are trying to use a common programming language feature, ask yourself this: ***Is this feature required to play pong?*** If not, then most likely that feature ***has not been implemented yet***. I initially only made the language so I could create pong and make a video about it, so it really is the ***bare minimum***.
 
 ## Documentation and getting started:
-[The docs and tutorial](https://spazelectro.github.io/ZSharpDocs/#/README)
+[The docs and tutorial](https://spazelectro.github.io/HolyZDocs/#/README)
 
 ## Installation
 Downloading or installing is very simple, here is how depending on your version and operating system:
 ### Windows
-1. Navigate to [the most recent release](https://github.com/sam-astro/Z-Sharp/releases) and download `ZSharp-Win-Installer.zip`.
-2. Unzip `ZSharp-Win-Installer.zip` and open the unzipped folder.
-3. Inside is a single file titled `ZSharp-Setup.exe`. Run it, and follow the setup instructions.
+1. Navigate to [the most recent release](https://github.com/sam-astro/Holy-Z/releases) and download `HolyZ-Win-Installer.zip`.
+2. Unzip `HolyZ-Win-Installer.zip` and open the unzipped folder.
+3. Inside is a single file titled `HolyZ-Setup.exe`. Run it, and follow the setup instructions.
 4. If it fails to run, make sure the `MS Visual Runtime and MSVC C++ Redistribute` are installed. You can download them [here from Microsoft](https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)
 5. Now that it is installed, there are a few ways to use it:
-    * (recommended) Any ZSharp file that ends with .ZS will automatically be associated with the interpreter. Just double-click it, and the interpreter will run.
+    * (recommended) Any HolyZ file that ends with .ZS will automatically be associated with the interpreter. Just double-click it, and the interpreter will run.
     * Drag and drop any .ZS script directly onto the executable.
     * Use command line, providing path to interpreter and then to script like so:
-    `> ./ZSharp.exe ./Pong-Example-Project/script.zs`
+    `> ./HolyZ.exe ./Pong-Example-Project/script.zs`
 6. Feel free to use and edit the `Pong-Example-Project`. It is a single script called `script.zs`, and you can open it with any of the methods above. It is also located on the releases page.
-> If you don't want to install ZSharp on your device, or you want easier acces to the executable and .DLLs, another version is provided called `ZS_Win_Base_Raw.zip`. This just contains all of the files the installer puts on your computer.
+> If you don't want to install HolyZ on your device, or you want easier acces to the executable and .DLLs, another version is provided called `ZS_Win_Base_Raw.zip`. This just contains all of the files the installer puts on your computer.
 ### Linux
 1. Install requirements: `SDL2, SDL2 Image, SDL2 TTF` Commands for `apt` and `pacman` below:
 
@@ -41,11 +41,11 @@ $ sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 $ sudo pacman -S sdl2 sdl2_image sdl2_ttf
 ```
 
-2. Navigate to [the most recent release](https://github.com/sam-astro/Z-Sharp/releases) and download `ZSharp-Linux.zip`.
-3. Unzip `ZSharp-Linux.zip` and open the unzipped folder.
-4. You will see some files. The Z# interpreter is `ZSharp`. Any time you want to execute a script, this is the program that will be used. You can use it like so:
+2. Navigate to [the most recent release](https://github.com/sam-astro/Holy-Z/releases) and download `HolyZ-Linux.zip`.
+3. Unzip `HolyZ-Linux.zip` and open the unzipped folder.
+4. You will see some files. The Z+ interpreter is `HolyZ`. Any time you want to execute a script, this is the program that will be used. You can use it like so:
     * Use terminal, providing path to executable and then to script like so:
-    `$ ./ZSharp ./Pong-Example-Project/script.zs`
+    `$ ./HolyZ ./Pong-Example-Project/script.zs`
 5. Feel free to use and edit the included `Pong-Example-Project`. It is a single script called `script.zs`, and you can open it with any of the methods above.
 
 
@@ -132,7 +132,7 @@ func Update(deltaTime)
 }
 ```
 Currently, ZSharp is ***VERY*** strict with formatting, and can throw an error if you forget to put a space somewhere.
-Also, speaking of errors, if your code has any it will show in the console. Errors are colored red, and warnings are colored yellow. A line number will also usually be provided. This is ***Not*** the line relative to the *documents* beginning, but rather the *functions* beginning.
+Currently, HolyZ is ***VERY*** strict with formatting, and can throw an error if you forget to put a space somewhere.
 Example:
 ```
 ERROR: line 5 in function Main
