@@ -1,8 +1,8 @@
 
 ## Introduction
-Holy Z is a custom programming language I made because I don't like c++ very much (Holy Z's interpreter is written in c++ though). Holy Z scripts have the file extension .ZS. The base syntax and formatting I would say is quite similar to C# or Python, but differs as task complexity increases. It also has support for graphics using SDL2.
+Holy Z is a custom programming language forked from Z-Sharp and optimized like Holy C. Holy Z's interpreter is written in C++ and supports both traditional Z-Sharp syntax and Holy C-inspired features. Holy Z scripts have the file extension .ZS. The base syntax is similar to C# or Python, but includes Holy C extensions for more flexible programming. It also has support for graphics using SDL2.
 
-Before using Z+:
+Before using Holy Z:
 There is ***no documentation***, ***strings*** barely work, ***performance*** isn't great, the syntax is ***very specific***, and most errors just cause it to ***crash without warning***. I am just a *single developer* working on this during my free time; between school, other projects, and YouTube. Holy Z will most likely never be finished, since it was really supposed to end when the video was published about it.
 If you are trying to use a common programming language feature, ask yourself this: ***Is this feature required to play pong?*** If not, then most likely that feature ***has not been implemented yet***. I initially only made the language so I could create pong and make a video about it, so it really is the ***bare minimum***.
 
@@ -22,7 +22,7 @@ Downloading or installing is very simple, here is how depending on your version 
     * Use command line, providing path to interpreter and then to script like so:
     `> ./HolyZ.exe ./Pong-Example-Project/script.zs`
 6. Feel free to use and edit the `Pong-Example-Project`. It is a single script called `script.zs`, and you can open it with any of the methods above. It is also located on the releases page.
-> If you don't want to install HolyZ on your device, or you want easier acces to the executable and .DLLs, another version is provided called `ZS_Win_Base_Raw.zip`. This just contains all of the files the installer puts on your computer.
+> If you don't want to install HolyZ on your device, or you want easier access to the executable and .DLLs, another version is provided called `HolyZ_Win_Base_Raw.zip`. This just contains all of the files the installer puts on your computer.
 ### Linux
 1. Install requirements: `SDL2, SDL2 Image, SDL2 TTF` Commands for `apt` and `pacman` below:
 
@@ -40,13 +40,13 @@ $ sudo pacman -S sdl2 sdl2_image sdl2_ttf
 
 2. Navigate to [the most recent release](https://github.com/sam-astro/Holy-Z/releases) and download `HolyZ-Linux.zip`.
 3. Unzip `HolyZ-Linux.zip` and open the unzipped folder.
-4. You will see some files. The Z+ interpreter is `HolyZ`. Any time you want to execute a script, this is the program that will be used. You can use it like so:
+4. You will see some files. The Holy Z interpreter is `HolyZ`. Any time you want to execute a script, this is the program that will be used. You can use it like so:
     * Use terminal, providing path to executable and then to script like so:
     `$ ./HolyZ ./Pong-Example-Project/script.zs`
 5. Feel free to use and edit the included `Pong-Example-Project`. It is a single script called `script.zs`, and you can open it with any of the methods above.
 
 
-## Here is some example code:
+## Here is some example code (Traditional Z-Sharp syntax):
 ```c++
 // Comments are indicated by two forward slashes
 // They can only be on their own line
@@ -129,7 +129,33 @@ func Update(deltaTime)
 }
 ```
 Currently, ZSharp is ***VERY*** strict with formatting, and can throw an error if you forget to put a space somewhere.
-Currently, HolyZ is ***VERY*** strict with formatting, and can throw an error if you forget to put a space somewhere.
+
+## Holy C-inspired syntax extensions:
+Holy Z supports Holy C-inspired syntax when using the `#holyc on` pragma:
+
+```c++
+#holyc on
+
+func Main()
+{
+    "Hello World\n";  // Auto-prints string literals
+    
+    int i = 5;
+    if (0 < i < 10) { Printl("In range"); }  // Range operators
+    
+    Printl(2 ^ 3);  // Exponentiation operator (result: 8)
+    
+    // Optional parentheses for functions with no args
+    SomeFunction;  // Same as SomeFunction()
+}
+```
+
+## Shell/REPL Mode:
+Run Holy Z in interactive shell mode:
+```bash
+./HolyZ --shell
+```
+
 Example:
 ```
 ERROR: line 5 in function Main

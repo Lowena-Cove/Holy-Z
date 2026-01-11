@@ -269,8 +269,6 @@ int any_type(const boost::any& val)
 								return 6;
 							}
 							catch (boost::bad_any_cast) // Does not convert, return
-							catch (boost::bad_any_cast) // Try converting to ClassInstance
-								LogWarning("variable has no type");
 								try
 								{
 									ClassInstance ci = any_cast<ClassInstance>(val);
@@ -278,45 +276,4 @@ int any_type(const boost::any& val)
 								}
 								catch (boost::bad_any_cast) // Does not convert, return
 								{
-									LogWarning("variable has no type");
-									return -1;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-// Compares two 'any' values to see if they contain the same data
-bool any_compare(const boost::any& a, const boost::any& b)
-{
-	int aType = any_type(a);
-	int bType = any_type(b);
-
-	// If they are different types, then they can't possibly be equal
-	if ((aType > 3 && bType <= 3) || (aType <= 3 && bType > 3))
-		return false;
-
-	// If it is a float, int, bool, or string, then they can easily be compared in their string form
-	if (aType <= 3)
-		return AnyAsString(a) == AnyAsString(b);
-
-	// If it is a Sprite, then compare separately after converted
-	else if (aType == 4)
-		return any_cast<Sprite>(a) == any_cast<Sprite>(b);
-
-	// If it is a Vec2, then compare separately after converted
-	else if (aType == 5)
-		return any_cast<Vec2>(a) == any_cast<Vec2>(b);
-	
-	// If it is a ClassInstance, compare by reference (same object)
-	else if (aType == 7)
-		return &any_cast<ClassInstance>(a) == &any_cast<ClassInstance>(b);
-		
-	return false;
-}
-
 #endif
