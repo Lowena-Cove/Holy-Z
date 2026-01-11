@@ -47,6 +47,9 @@ using namespace boost;
 unordered_map<string, boost::any> globalVariableValues;
 unordered_map<string, vector<vector<string>>> functionValues;
 
+// Current execution context for 'this' keyword
+ClassInstance* currentThisContext = nullptr;
+
 boost::any GetVariableValue(const string& varName, const unordered_map<string, boost::any>& variableValues)
 {
 	string classSubComponent;
@@ -54,6 +57,21 @@ boost::any GetVariableValue(const string& varName, const unordered_map<string, b
 
 	if (count(varName, '.') > 0)
 	{
+		classSubComponent = trim(varName.substr(indexInStr(varName, '.') + 1, -1));
+		baseName = trim(split(varName, '.')[0]);
+	}
+
+	// Handle 'this' keyword
+	if (baseName == "this")
+	{
+		if (currentThisContext != nullptr)
+		{
+			if (classSubComponent.empty())
+				return *currentThisContext;
+			else
+				return GetClassAttribute(*currentThisContext, classSubComponent);
+		}
+		else
 		classSubComponent = trim(varName.substr(indexInStr(varName, '.') + 1, -1));
 		baseName = trim(split(varName, '.')[0]);
 	}
@@ -78,6 +96,15 @@ boost::any GetVariableValue(const string& varName, const unordered_map<string, b
 // Check if there is a variable with the specified name
 bool IsVar(const string& varName, const unordered_map<string, boost::any>& variableValues)
 {
+	// Handle 'this' keyword
+	if (split(varName, '.')[0] == "this")
+		return currentThisContext != nullptr;
+	
+	// Handle class static access (ClassName.staticMember)
+	string baseName = split(varName, '.')[0];
+	if (globalClassDefinitions.find(baseName) != globalClassDefinitions.end())
+		return true;
+	
 	if (split(varName, '.')[0] == "ZS")
 		return false;
 
@@ -132,6 +159,13 @@ void printVarValues(const vector<string>& vec, unordered_map<string, boost::any>
 bool IsFunction(const string& funcName)
 {
 	if (functionValues.find(funcName) != functionValues.end())
+		return true;
+	else
+		return false;
+}
+bool IsClass(const string& className)
+{
+	if (globalClassDefinitions.find(className) != globalClassDefinitions.end())
 		return true;
 	else
 		return false;
@@ -772,6 +806,25 @@ int parseHolyZ(string script)
 				functionContents.push_back(words.at(lineNum));
 				//cout << functName << "<" << args << ">" << endl;
 				lineNum++;
+		if (words.at(lineNum).at(0) == "class")
+		{
+			string className = words.at(lineNum).at(1);
+			ClassDefinition classDef(className);
+			
+			// Simple class parsing - skip body for now
+			int numOfBrackets = countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+			lineNum++;
+			while (lineNum < (int)words.size() && numOfBrackets > 0)
+			{
+				numOfBrackets += countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+				lineNum++;
+			}
+			
+			globalClassDefinitions[className] = classDef;
+#if DEVELOPER_MESSAGES == true
+			InterpreterLog("Load script class " + className + "...");
+#endif
+		}
 			}
 			//functionContents = removeTabsWdArry(functionContents, 1);
 
