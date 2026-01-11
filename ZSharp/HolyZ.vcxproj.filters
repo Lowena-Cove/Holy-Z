@@ -54,7 +54,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="ZSharp.rc">
+    <ResourceCompile Include="HolyZ.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

@@ -5,7 +5,7 @@
 //bool DEVELOPER_MESSAGES = true;
 #define DEVELOPER_MESSAGES false
 #define EXAMPLE_PROJECT false
-#define NAMEVERSION "ZSharp v2.1.3-alpha"
+#define NAMEVERSION "HolyZ v2.1.3-alpha"
 
 #if defined(__unix__)
 #define UNIX true
@@ -705,7 +705,7 @@ boost::any ExecuteFunction(const string& functionName, const vector<boost::any>&
 	return nullType;
 }
 
-int parseZSharp(string script)
+int parseHolyZ(string script)
 {
 	//script = replace(script, "    ", "\t"); // Replace spaces with tabs (not really required, and will break purposefull whitespace in strings etc.)
 
@@ -820,7 +820,7 @@ int parseZSharp(string script)
 				InterpreterLog("Gather script contents...");
 #endif
 #endif
-				parseZSharp(scriptTextContents);
+				parseHolyZ(scriptTextContents);
 			}
 
 
@@ -871,7 +871,7 @@ int main(int argc, char* argv[])
 	cout << endl << endl;
 
 	// Gathers builtin functions and variables
-	parseZSharp(ZSContents);
+	parseHolyZ(ZSContents);
 	//functionValues = builtinFunctionValues;
 	//globalVariableValues = builtinVarVals;
 
@@ -882,7 +882,7 @@ int main(int argc, char* argv[])
 	{
 		std::string scriptPath;
 		if (EXAMPLE_PROJECT)
-			scriptPath = "D:\\Code\\Z-Sharp\\examples\\Platformer\\script.zs";
+			scriptPath = "D:\\Code\\Holy-Z\\examples\\Platformer\\script.zs";
 		else
 			scriptPath = argv[1];
 #if DEVELOPER_MESSAGES
@@ -943,7 +943,7 @@ int main(int argc, char* argv[])
 	InterpreterLog("Parsing...");
 #endif
 	// Parse the script
-	parseZSharp(scriptTextContents);
+	parseHolyZ(scriptTextContents);
 #if DEVELOPER_MESSAGES
 	InterpreterLog("Start Main()");
 #endif
