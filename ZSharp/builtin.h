@@ -36,6 +36,63 @@ using namespace std;
 using namespace boost;
 
 vector<string> types = { "int", "float", "string", "bool", "void", "null", "Sprite", "Vec2", "Text" };
+// Forward declarations for Holy C classes
+class ClassDefinition;
+class ClassInstance;
+class ClassMethod;
+class ClassAttribute;
+
+// Global class definitions map
+extern unordered_map<string, ClassDefinition> globalClassDefinitions;
+
+// Class definitions for Holy C support
+class ClassAttribute {
+public:
+	string name;
+	boost::any value;
+	bool isStatic;
+	
+	ClassAttribute() : isStatic(false) {}
+	ClassAttribute(const string& n, const boost::any& v, bool stat = false) 
+		: name(n), value(v), isStatic(stat) {}
+};
+
+class ClassMethod {
+public:
+	string name;
+	vector<string> parameters;
+	vector<vector<string>> body;
+	bool isStatic;
+	
+	ClassMethod() : isStatic(false) {}
+	ClassMethod(const string& n, const vector<string>& params, bool stat = false)
+		: name(n), parameters(params), isStatic(stat) {}
+};
+
+class ClassDefinition {
+public:
+	string className;
+	string superClassName;
+	vector<ClassAttribute> attributes;
+	vector<ClassMethod> methods;
+	unordered_map<string, boost::any> staticAttributes;
+	
+	ClassDefinition() {}
+	ClassDefinition(const string& name) : className(name) {}
+};
+
+class ClassInstance {
+public:
+	string className;
+	unordered_map<string, boost::any> instanceAttributes;
+	
+	ClassInstance() {}
+	ClassInstance(const string& name) : className(name) {}
+};
+
+// Global class definitions
+unordered_map<string, ClassDefinition> globalClassDefinitions;
+
 
 //unordered_map<string, vector<vector<string>>> builtinFunctionValues;
 //unordered_map<string, boost::any> builtinVarVals;

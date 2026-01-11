@@ -5,7 +5,7 @@
 //bool DEVELOPER_MESSAGES = true;
 #define DEVELOPER_MESSAGES false
 #define EXAMPLE_PROJECT false
-#define NAMEVERSION "HolyZ v2.1.3-alpha"
+#define NAMEVERSION "Holy Z v2.2.0-alpha (Holy C Enhanced)"
 
 #if defined(__unix__)
 #define UNIX true
@@ -46,6 +46,10 @@ using namespace boost;
 
 unordered_map<string, boost::any> globalVariableValues;
 unordered_map<string, vector<vector<string>>> functionValues;
+
+// Holy C mode flags
+bool holyCMode = false;
+bool shellMode = false;
 
 // Current execution context for 'this' keyword
 ClassInstance* currentThisContext = nullptr;
@@ -176,6 +180,15 @@ bool IsZSFunction(const string& funcName)
 }
 
 boost::any EvalExpression(const string& ex, unordered_map<string, boost::any>& variableValues)
+bool IsHolyCFunction(const string& funcName)
+{
+	return funcName == "ToInt" || funcName == "ToFloat" || funcName == "ToStr" || funcName == "ToBool";
+}
+
+// Forward declarations
+boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::any>& args);
+void RunREPL();
+
 {
 	string expression = trim(ex);
 	bool inQuotes = false;
@@ -202,6 +215,16 @@ boost::any EvalExpression(const string& ex, unordered_map<string, boost::any>& v
 #endif
 			vector<boost::any> funcArgs = VarValues(argList, variableValues);
 			return ExecuteFunction(split(expression, '(')[0], funcArgs);
+		}
+		else if (IsHolyCFunction(split(expression, '(')[0]) && !inQuotes)
+		{
+			string insideFunArgs = betweenChars(expression, '(', ')');
+			vector<string> argList = splitNoOverlap(insideFunArgs, ',', '(', ')');
+#if DEVELOPER_MESSAGES == true
+			cout << split(expression, '(')[0] << "  [" << unWrapVec(argList) << "]" << endl;
+#endif
+			vector<boost::any> funcArgs = VarValues(argList, variableValues);
+			return ExecuteHolyCFunction(split(expression, '(')[0], funcArgs);
 		}
 		else if (isZS && !inQuotes)
 		{
@@ -430,6 +453,24 @@ int varOperation(const vector<string>& str, unordered_map<string, boost::any>& v
 }
 
 boost::any ProcessLine(const vector<vector<string>>& words, int& lineNum, unordered_map<string, boost::any>& variableValues)
+// Holy C type conversion functions
+boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::any>& args)
+{
+	if (functionName == "ToInt")
+		return AnyAsInt(args.at(0));
+	else if (functionName == "ToFloat")
+		return AnyAsFloat(args.at(0));
+	else if (functionName == "ToStr")
+		return AnyAsString(args.at(0));
+	else if (functionName == "ToBool")
+		return AnyAsBool(args.at(0));
+	else
+	{
+		LogWarning("Holy C function '" + functionName + "' does not exist.");
+		return nullType;
+	}
+}
+
 {
 	//// Check if the first two chars are '//', which would make it a comment
 	//if (startsWith(words.at(lineNum).at(0), "//"))
@@ -437,6 +478,22 @@ boost::any ProcessLine(const vector<vector<string>>& words, int& lineNum, unorde
 
 	// If print statement (deprecated, now use ZS.System.Print() function)
 	if (words.at(lineNum).at(0) == "print")
+	if (holyCMode && words.at(lineNum).size() == 1 && startsWith(words.at(lineNum).at(0), "\"") && endsWith(words.at(lineNum).at(0), "\""))
+	{
+		// Auto-print string literals in Holy C mode
+		string str = words.at(lineNum).at(0);
+		str = str.substr(1, str.length() - 2); // Remove quotes
+		cout << StringRaw(str) << endl;
+		return nullType;
+	}
+	
+	// Check for #holyc pragma
+	if (words.at(lineNum).at(0) == "#holyc" && words.at(lineNum).size() > 1 && words.at(lineNum).at(1) == "on")
+	{
+		holyCMode = true;
+		return nullType;
+	}
+	
 	{
 		cout << StringRaw(AnyAsString(EvalExpression(unWrapVec(vector<string>(words.at(lineNum).begin() + 1, words.at(lineNum).end())), variableValues))) << endl;
 		return nullType;
@@ -740,6 +797,69 @@ boost::any ExecuteFunction(const string& functionName, const vector<boost::any>&
 }
 
 int parseHolyZ(string script)
+// REPL (Read-Eval-Print Loop) for shell mode
+void RunREPL()
+{
+	cout << "Holy Z Interactive Shell (Holy C Enhanced)" << endl;
+	cout << "Type 'exit' to quit, '#holyc on' to enable Holy C mode" << endl;
+	cout << ">>> ";
+	
+	string input;
+	unordered_map<string, boost::any> replVariables;
+	
+	while (getline(cin, input))
+	{
+		if (input == "exit" || input == "quit")
+			break;
+			
+		if (trim(input).empty())
+		{
+			cout << ">>> ";
+			continue;
+		}
+		
+		try
+		{
+			// Handle pragma directives
+			if (startsWith(trim(input), "#holyc"))
+			{
+				if (input.find("on") != string::npos)
+				{
+					holyCMode = true;
+					cout << "Holy C mode enabled" << endl;
+				}
+				else if (input.find("off") != string::npos)
+				{
+					holyCMode = false;
+					cout << "Holy C mode disabled" << endl;
+				}
+			}
+			// Handle expressions and statements
+			else
+			{
+				// Try to evaluate as expression first
+				boost::any result = EvalExpression(input, replVariables);
+				if (!result.empty())
+				{
+					string resultStr = AnyAsString(result);
+					if (!resultStr.empty() && resultStr != "0")
+						cout << resultStr << endl;
+				}
+			}
+		}
+		catch (const std::exception& e)
+		{
+			cout << "Error: " << e.what() << endl;
+		}
+		catch (...)
+		{
+			cout << "Unknown error occurred" << endl;
+		}
+		
+		cout << ">>> ";
+	}
+}
+
 {
 	//script = replace(script, "    ", "\t"); // Replace spaces with tabs (not really required, and will break purposefull whitespace in strings etc.)
 
@@ -930,6 +1050,14 @@ int main(int argc, char* argv[])
 
 	std::string scriptTextContents;
 
+	// Check for shell mode
+	if (argc > 1 && (string(argv[1]) == "--shell" || string(argv[1]) == "-s"))
+	{
+		shellMode = true;
+		RunREPL();
+		return 0;
+	}
+	
 	// If scriptname is supplied and not in developer mode
 	if (argc > 1 || EXAMPLE_PROJECT)
 	{

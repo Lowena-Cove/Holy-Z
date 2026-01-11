@@ -219,5 +219,35 @@ func PercentToHundred(value, percent)
 	float temp = value * 100 / percent
 	return temp
 }
+
+//////////////////////////////////////////
+// ↓ HOLY C ENHANCED FUNCTIONS ↓ //
+//////////////////////////////////////////
+
+// Holy C style type conversion functions
+func ToInt(value)
+{
+	int result = ZS.Math.Round(value)
+	return result
+}
+
+func ToFloat(value)
+{
+	float result = value + 0.0
+	return result
+}
+
+func ToStr(value)
+{
+	string result = value + ""
+	return result
+}
+
+func ToBool(value)
+{
+	bool result = value == true
+	return result
+}
+
 )"
 ;
