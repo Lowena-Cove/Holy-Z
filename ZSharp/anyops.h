@@ -201,8 +201,24 @@ Vec2 AnyAsVec2(const boost::any& val)
 	}
 }
 
+// Will get type 'any' val to a ClassInstance
+ClassInstance AnyAsClassInstance(const boost::any& val)
+{
+	if (any_null(val))
+		return ClassInstance();
+	try // Try converting to ClassInstance
+	{
+		return any_cast<ClassInstance>(val);
+	}
+	catch (boost::bad_any_cast)
+	{
+		LogWarning("invalid conversion to type 'ClassInstance'");
+		return ClassInstance();
+	}
+}
+
 // Gets type of 'any' val
-// 0 -> int;  1 -> float;  2 -> bool;  3 -> string;  4 -> Sprite; 5 -> Vec2; 6 -> Text;
+// 0 -> int;  1 -> float;  2 -> bool;  3 -> string;  4 -> Sprite; 5 -> Vec2; 6 -> Text; 7 -> ClassInstance;
 int any_type(const boost::any& val)
 {
 	try // Try converting to int
@@ -253,9 +269,18 @@ int any_type(const boost::any& val)
 								return 6;
 							}
 							catch (boost::bad_any_cast) // Does not convert, return
-							{
+							catch (boost::bad_any_cast) // Try converting to ClassInstance
 								LogWarning("variable has no type");
-								return -1;
+								try
+								{
+									ClassInstance ci = any_cast<ClassInstance>(val);
+									return 7;
+								}
+								catch (boost::bad_any_cast) // Does not convert, return
+								{
+									LogWarning("variable has no type");
+									return -1;
+								}
 							}
 						}
 					}
@@ -286,6 +311,10 @@ bool any_compare(const boost::any& a, const boost::any& b)
 	// If it is a Vec2, then compare separately after converted
 	else if (aType == 5)
 		return any_cast<Vec2>(a) == any_cast<Vec2>(b);
+	
+	// If it is a ClassInstance, compare by reference (same object)
+	else if (aType == 7)
+		return &any_cast<ClassInstance>(a) == &any_cast<ClassInstance>(b);
 		
 	return false;
 }

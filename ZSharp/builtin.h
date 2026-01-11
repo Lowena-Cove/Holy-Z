@@ -488,5 +488,163 @@ boost::any ZSFunction(const string& name, const vector<boost::any>& args)
 
 	return nullType;
 }
+// Class-related function implementations
+
+// Find a method in a class or its superclasses
+ClassMethod* FindMethod(const string& className, const string& methodName, bool isStatic = false)
+{
+	if (globalClassDefinitions.find(className) == globalClassDefinitions.end())
+		return nullptr;
+	
+	ClassDefinition& classDef = globalClassDefinitions[className];
+	
+	// Search in current class
+	for (auto& method : classDef.methods)
+	{
+		if (method.name == methodName && method.isStatic == isStatic)
+			return &method;
+	}
+	
+	// Search in superclass if not found
+	if (!classDef.superClassName.empty())
+		return FindMethod(classDef.superClassName, methodName, isStatic);
+	
+	return nullptr;
+}
+
+// Create a new class instance
+boost::any CreateClassInstance(const string& className, const vector<boost::any>& constructorArgs)
+{
+	if (globalClassDefinitions.find(className) == globalClassDefinitions.end())
+	{
+		LogWarning("Class '" + className + "' not found");
+		return nullType;
+	}
+	
+	ClassInstance instance(className);
+	
+	// Initialize instance attributes from class definition
+	ClassDefinition& classDef = globalClassDefinitions[className];
+	for (const auto& attr : classDef.attributes)
+	{
+		if (!attr.isStatic)
+			instance.instanceAttributes[attr.name] = attr.value;
+	}
+	
+	// Call constructor if it exists
+	ClassMethod* constructor = FindMethod(className, "constructor", false);
+	if (constructor != nullptr)
+	{
+		// TODO: Execute constructor with 'this' context
+		// This will be implemented in the main execution logic
+	}
+	
+	return instance;
+}
+
+// Call a method on a class instance
+boost::any CallClassMethod(const ClassInstance& instance, const string& methodName, const vector<boost::any>& args)
+{
+	ClassMethod* method = FindMethod(instance.className, methodName, false);
+	if (method == nullptr)
+	{
+		LogWarning("Method '" + methodName + "' not found in class '" + instance.className + "'");
+		return nullType;
+	}
+	
+	// TODO: Execute method with 'this' context
+	// This will be implemented in the main execution logic
+	return nullType;
+}
+
+// Call a static method on a class
+boost::any CallStaticMethod(const string& className, const string& methodName, const vector<boost::any>& args)
+{
+	ClassMethod* method = FindMethod(className, methodName, true);
+	if (method == nullptr)
+	{
+		LogWarning("Static method '" + methodName + "' not found in class '" + className + "'");
+		return nullType;
+	}
+	
+	// TODO: Execute static method
+	// This will be implemented in the main execution logic
+	return nullType;
+}
+
+// Get class attribute (static or instance)
+boost::any GetClassAttribute(const ClassInstance& instance, const string& attributeName)
+{
+	// First check instance attributes
+	auto it = instance.instanceAttributes.find(attributeName);
+	if (it != instance.instanceAttributes.end())
+		return it->second;
+	
+	// Then check static attributes
+	if (globalClassDefinitions.find(instance.className) != globalClassDefinitions.end())
+	{
+		ClassDefinition& classDef = globalClassDefinitions[instance.className];
+		auto staticIt = classDef.staticAttributes.find(attributeName);
+		if (staticIt != classDef.staticAttributes.end())
+			return staticIt->second;
+		
+		// Check superclass static attributes
+		if (!classDef.superClassName.empty())
+		{
+			ClassInstance tempInstance(classDef.superClassName);
+			return GetClassAttribute(tempInstance, attributeName);
+		}
+	}
+	
+	LogWarning("Attribute '" + attributeName + "' not found in class '" + instance.className + "'");
+	return nullType;
+}
+
+// Set class attribute (static or instance)
+void SetClassAttribute(ClassInstance& instance, const string& attributeName, const boost::any& value)
+{
+	// Check if it's an instance attribute
+	auto it = instance.instanceAttributes.find(attributeName);
+	if (it != instance.instanceAttributes.end())
+	{
+		instance.instanceAttributes[attributeName] = value;
+		return;
+	}
+	
+	// Check if it's a static attribute
+	if (globalClassDefinitions.find(instance.className) != globalClassDefinitions.end())
+	{
+		ClassDefinition& classDef = globalClassDefinitions[instance.className];
+		auto staticIt = classDef.staticAttributes.find(attributeName);
+		if (staticIt != classDef.staticAttributes.end())
+		{
+			classDef.staticAttributes[attributeName] = value;
+			return;
+		}
+	}
+	
+	// If not found, create as instance attribute
+	instance.instanceAttributes[attributeName] = value;
+}
+
+// Get static attribute from class
+boost::any GetStaticAttribute(const string& className, const string& attributeName)
+{
+	if (globalClassDefinitions.find(className) != globalClassDefinitions.end())
+	{
+		ClassDefinition& classDef = globalClassDefinitions[className];
+		auto it = classDef.staticAttributes.find(attributeName);
+		if (it != classDef.staticAttributes.end())
+			return it->second;
+		
+		// Check superclass
+		if (!classDef.superClassName.empty())
+			return GetStaticAttribute(classDef.superClassName, attributeName);
+	}
+	
+	LogWarning("Static attribute '" + attributeName + "' not found in class '" + className + "'");
+	return nullType;
+}
+
 
 #endif
