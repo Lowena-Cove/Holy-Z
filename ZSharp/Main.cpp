@@ -79,6 +79,7 @@ boost::any GetVariableValue(const string& varName, const unordered_map<string, b
 		classSubComponent = trim(varName.substr(indexInStr(varName, '.') + 1, -1));
 		baseName = trim(split(varName, '.')[0]);
 	}
+	}
 
 	boost::any outputValue = nullType;
 
@@ -182,14 +183,16 @@ bool IsZSFunction(const string& funcName)
 boost::any EvalExpression(const string& ex, unordered_map<string, boost::any>& variableValues)
 bool IsHolyCFunction(const string& funcName)
 {
-	return funcName == "ToInt" || funcName == "ToFloat" || funcName == "ToStr" || funcName == "ToBool";
-}
-
+{
 // Forward declarations
 boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::any>& args);
 void RunREPL();
 
+boost::any EvalExpression(const string& ex, unordered_map<string, boost::any>& variableValues)
 {
+	string expression = trim(ex);
+	bool inQuotes = false;
+
 	string expression = trim(ex);
 	bool inQuotes = false;
 
@@ -452,7 +455,575 @@ int varOperation(const vector<string>& str, unordered_map<string, boost::any>& v
 	return 1;
 }
 
+// Holy C type conversion functions
+boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::any>& args)
+{
+	if (functionName == "ToInt")
+		return AnyAsInt(args.at(0));
+	else if (functionName == "ToFloat")
+		return AnyAsFloat(args.at(0));
+	else if (functionName == "ToStr")
+		return AnyAsString(args.at(0));
+	else if (functionName == "ToBool")
+		return AnyAsBool(args.at(0));
+	else
+	{
+		LogWarning("Holy C function '" + functionName + "' does not exist.");
+		return nullType;
+	}
+}
+
 boost::any ProcessLine(const vector<vector<string>>& words, int& lineNum, unordered_map<string, boost::any>& variableValues)
+{
+	//// Check if the first two chars are '//', which would make it a comment
+	//if (startsWith(words.at(lineNum).at(0), "//"))
+	//	return nullType;
+
+	// If print statement (deprecated, now use ZS.System.Print() function)
+	if (words.at(lineNum).at(0) == "print")
+	{
+		cout << StringRaw(AnyAsString(EvalExpression(unWrapVec(vector<string>(words.at(lineNum).begin() + 1, words.at(lineNum).end())), variableValues))) << endl;
+		return nullType;
+	}
+	
+	// Check for Holy C mode string literals
+	if (holyCMode && words.at(lineNum).size() == 1 && startsWith(words.at(lineNum).at(0), "\"") && endsWith(words.at(lineNum).at(0), "\""))
+	{
+		// Auto-print string literals in Holy C mode
+		string str = words.at(lineNum).at(0);
+		str = str.substr(1, str.length() - 2); // Remove quotes
+		cout << StringRaw(str) << endl;
+		return nullType;
+	}
+	
+	// Check for #holyc pragma
+	if (words.at(lineNum).at(0) == "#holyc" && words.at(lineNum).size() > 1 && words.at(lineNum).at(1) == "on")
+	{
+		holyCMode = true;
+		return nullType;
+	}
+
+	// Check if it is a function return
+	else if (words.at(lineNum).at(0) == "return")
+		return EvalExpression(unWrapVec(vector<string>(words.at(lineNum).begin() + 1, words.at(lineNum).end())), variableValues);
+
+	// Check if it is ZS Builtin function call
+	else if (startsWith(words.at(lineNum).at(0), "ZS."))
+		return EvalExpression(unWrapVec(words.at(lineNum)), variableValues);
+
+	// Check if it is function call
+	else if (IsFunction(split(words.at(lineNum).at(0), '(')[0]))
+	{
+		// start -> FuncCall(0, x, OtherFunc(a))
+		// changeto -> 0, x, OtherFunc(a)
+		string insideFunArgs = betweenChars(unWrapVec(words.at(lineNum)), '(', ')');
+		vector<string> argList = splitNoOverlap(insideFunArgs, ',', '(', ')');
+#if DEVELOPER_MESSAGES == true
+		cout << unWrapVec(argList) << endl;
+		printVarValues(argList, variableValues);
+#endif
+		vector<boost::any> funcArgs = VarValues(argList, variableValues);
+		ExecuteFunction(split(words.at(lineNum).at(0), '(')[0], funcArgs);
+		return nullType;
+	}
+
+	// Check if it is a SplitThread call
+	else if (startsWith(words.at(lineNum).at(0), "SplitThread"))
+	{
+		vector<string> lineContents = words.at(lineNum);
+		cout << "New Thread: " << words.at(lineNum).at(0) << endl;
+		//lineContents.at(0) = betweenChars(lineContents.at(0), '(', ')');
+
+		//cout << "debug: " << lineContents.at(0) << endl;
+
+		//if (betweenChars(lineContents.at(0), '(', ')') == "")
+		//	std::thread thread_obj(ExecuteFunction, trim(split(lineContents.at(0), '(')[0]), vector<boost::any>());
+		//else
+		//	std::thread thread_obj(ExecuteFunction, trim(split(lineContents.at(0), '(')[0]), VarValues(split(RMParenthesis("(" + split(unWrapVec(rangeInVec(lineContents, 0, (int)lineContents.size() - 2)), '(')[1]), ','), variableValues));
+		return nullType;
+	}
+
+	// Check if global variable declaration
+	else if (words.at(lineNum).at(0) == "global")
+	{
+		try
+		{
+			globalVariableValues[words.at(lineNum).at(2)] = EvalExpression(unWrapVec(slice(words.at(lineNum), 4, -1)), variableValues);
+		}
+		catch (const std::exception&)
+		{
+			LogCriticalError("Error at line: " + to_string(lineNum) + ", " + unWrapVec(words.at(lineNum)) + ", couldn't initialize variable.");
+		}
+		return nullType;
+	}
+
+	// Iterate through all types to see if line inits or
+	// re-inits a variable then store it with it's value
+	else if (countInVector(types, words.at(lineNum).at(0)) > 0)
+	{
+		try
+		{
+			variableValues[words.at(lineNum).at(1)] = EvalExpression(unWrapVec(slice(words.at(lineNum), 3, -1)), variableValues);
+		}
+		catch (const std::exception&)
+		{
+			LogCriticalError("Error at line: " + to_string(lineNum) + ", " + unWrapVec(words.at(lineNum)) + ", couldn't initialize variable.");
+		}
+		return nullType;
+	}
+
+	// Check existing variables: If matches, then it means
+	// the variables value is getting changed with an operator
+	else if (count(words.at(lineNum).at(0), '.') == 0 && (IsVar(words.at(lineNum).at(0), variableValues) || IsVar(words.at(lineNum).at(0), globalVariableValues)))
+	{
+		// Evaluates what the operator (ex. '=', '+=') does to the value on the left by the value on the right
+		varOperation(vector<string>(words.at(lineNum).begin(), words.at(lineNum).end()), variableValues);
+		return nullType;
+	}
+
+	// Check existing variables: To see if accessing class sub component
+	else if (count(words.at(lineNum).at(0), '.') > 0 && IsVar(split(words.at(lineNum).at(0), '.')[0], variableValues) || IsVar(split(words.at(lineNum).at(0), '.')[0], globalVariableValues))
+	{
+		if (IsVar(split(words.at(lineNum).at(0), '.')[0], variableValues))
+			variableValues[split(words.at(lineNum).at(0), '.')[0]] = EditClassSubComponent(variableValues[split(words.at(lineNum).at(0), '.')[0]], words.at(lineNum).at(1), EvalExpression(unWrapVec(vector<string>(words.at(lineNum).begin() + 2, words.at(lineNum).end())), variableValues), split(words.at(lineNum).at(0), '.')[1]);
+		else if (IsVar(split(words.at(lineNum).at(0), '.')[0], globalVariableValues))
+			globalVariableValues[split(words.at(lineNum).at(0), '.')[0]] = EditClassSubComponent(globalVariableValues[split(words.at(lineNum).at(0), '.')[0]], words.at(lineNum).at(1), EvalExpression(unWrapVec(vector<string>(words.at(lineNum).begin() + 2, words.at(lineNum).end())), variableValues), split(words.at(lineNum).at(0), '.')[1]);
+		return nullType;
+	}
+
+	// If declaring a while loop, loop until false
+	else if (words.at(lineNum).at(0) == "while")
+	{
+		vector<vector<string>> whileContents;
+		vector<string> whileParameters;
+
+		// Gather the parameters that must be == true for the loop to run
+		int numOfBrackets = 0;
+		for (int w = 1; w < (int)words.at(lineNum).size(); w++) {
+			if (count(words.at(lineNum).at(w), '{') == 0)
+				whileParameters.push_back(words.at(lineNum)[w]);
+			else
+			{
+				whileParameters.push_back(replace(words.at(lineNum)[w], "{", ""));
+				numOfBrackets = 1;
+				break;
+			}
+		}
+
+		// If the statement is already false, don't bother gathering the contents
+		if (BooleanLogic(whileParameters.at(0), whileParameters.at(1), whileParameters.at(2), variableValues) == false) {
+			lineNum++;
+			while (lineNum < (int)words.size())
+			{
+				numOfBrackets += countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+				if (numOfBrackets == 0)
+					break;
+				lineNum++;
+			}
+			return nullType;
+		}
+
+		// Gather the contents
+		lineNum++;
+		while (lineNum < (int)words.size())
+		{
+			numOfBrackets += countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+			if (numOfBrackets == 0)
+				break;
+			whileContents.push_back(words.at(lineNum));
+			lineNum++;
+		}
+
+		//whileContents = removeTabsWdArry(whileContents, 1);
+
+		// Loop while true
+		while (BooleanLogic(whileParameters.at(0), whileParameters.at(1), whileParameters.at(2), variableValues))
+		{
+			//Iterate through all lines in while loop
+			for (int lineNum = 0; lineNum < (int)whileContents.size(); lineNum++)
+			{
+				if (whileContents.at(lineNum).at(0) == "continue")
+					break; // Stops iterating through lines and return to beginning
+				if (whileContents.at(lineNum).at(0) == "break")
+					return nullType; // Stops iterating through lines and leave while loop
+				boost::any returnVal = ProcessLine(whileContents, lineNum, variableValues);
+				if (!returnVal.empty()) {
+					try
+					{
+						BREAK t = any_cast<BREAK>(returnVal);
+						return nullType;
+					}
+					catch (boost::bad_any_cast)
+					{
+						return returnVal;
+					}
+				}
+			}
+		}
+		return nullType;
+	}
+
+	// If declaring an if statement, only execute if true
+	else if (words.at(lineNum).at(0) == "if")
+	{
+		vector<vector<string>> ifContents;
+		vector<string> ifParameters;
+
+		// Gather the parameters that must be == true for the loop to run
+		int numOfBrackets = 0;
+		for (int w = 1; w < (int)words.at(lineNum).size(); w++) {
+			if (count(words.at(lineNum).at(w), '{') == 0)
+				ifParameters.push_back(words.at(lineNum)[w]);
+			else
+			{
+				ifParameters.push_back(replace(words.at(lineNum)[w], "{", ""));
+				numOfBrackets = 1;
+				break;
+			}
+		}
+
+		// If the statement is already false, don't bother gathering the contents
+		if (BooleanLogic(ifParameters.at(0), ifParameters.at(1), ifParameters.at(2), variableValues) == false) {
+			lineNum++;
+			while (lineNum < (int)words.size())
+			{
+				numOfBrackets += countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+				if (numOfBrackets == 0)
+					break;
+				lineNum++;
+			}
+			return nullType;
+		}
+
+		// Gather the contents
+		lineNum++;
+		while (lineNum < (int)words.size())
+		{
+			numOfBrackets += countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+			if (numOfBrackets == 0)
+				break;
+			ifContents.push_back(words.at(lineNum));
+			lineNum++;
+		}
+		//ifContents = removeTabsWdArry(ifContents, 1);
+
+		// Execute if true
+		if (BooleanLogic(ifParameters.at(0), ifParameters.at(1), ifParameters.at(2), variableValues))
+		{
+			//Iterate through all lines in if statement
+			for (int l = 0; l < (int)ifContents.size(); l++)
+			{
+				if (ifContents.at(l).at(0) == "break")
+					return breakReOp; // Stops iterating through lines and leave while loop
+				boost::any returnVal = ProcessLine(ifContents, l, variableValues);
+				if (!returnVal.empty())
+					return returnVal;
+			}
+		}
+		else if (words.size() > lineNum)
+		{
+			if (words[lineNum].at(0) == "else")
+			{
+				vector<vector<string>> elseContents;
+				vector<string> elseParameters;
+
+				int numOfBrackets = 0;
+				for (int w = 1; w < (int)words.at(lineNum).size(); w++) {
+					if (count(words.at(lineNum).at(w), '{') != 0)
+					{
+						numOfBrackets = 1;
+						break;
+					}
+				}
+
+				lineNum++;
+				while (lineNum < (int)words.size())
+				{
+					numOfBrackets += countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+					if (numOfBrackets == 0)
+						break;
+					elseContents.push_back(words.at(lineNum));
+					lineNum++;
+				}
+
+				//elseContents = removeTabsWdArry(elseContents, 1);
+
+				//Iterate through all lines in else statement
+				for (int l = 0; l < (int)elseContents.size(); l++)
+				{
+					boost::any returnVal = ProcessLine(elseContents, l, variableValues);
+					if (!returnVal.empty())
+						return returnVal;
+				}
+
+			}
+		}
+		return nullType;
+	}
+	return nullType;
+}
+
+boost::any ExecuteFunction(const string& functionName, const vector<boost::any>& inputVarVals)
+{
+	// Get contents of function from global function map
+	std::vector<std::vector<std::string>> words = functionValues[functionName];
+
+	unordered_map<string, boost::any> variableValues = {};
+
+	std::vector<std::string> funcArgs = words.at(0);
+	// Set function variables equal to whatever inputs were provided
+	for (int i = 0; i < (int)inputVarVals.size(); i++)
+	{
+		if (i < funcArgs.size())
+		{
+			variableValues[funcArgs[i]] = inputVarVals[i];
+#if DEVELOPER_MESSAGES == true
+			cout << "in " << functionName + "  " << funcArgs[i] << " == " << AnyAsString(inputVarVals[i]) << endl;
+#endif
+		}
+	}
+
+	//Iterate through all lines in function
+	for (int lineNum = 1; lineNum < (int)words.size(); lineNum++)
+	{
+		try
+		{
+			boost::any returnVal = ProcessLine(words, lineNum, variableValues);
+			if (!returnVal.empty())
+				return returnVal;
+		}
+		catch (const std::exception&)
+		{
+			LogCriticalError("Error at line: " + to_string(lineNum) + ", " + unWrapVec(words.at(lineNum)));
+		}
+	}
+	return nullType;
+}
+
+// REPL (Read-Eval-Print Loop) for shell mode
+void RunREPL()
+{
+	cout << "Holy Z Interactive Shell (Holy C Enhanced)" << endl;
+	cout << "Type 'exit' to quit, '#holyc on' to enable Holy C mode" << endl;
+	cout << ">>> ";
+	
+	string input;
+	unordered_map<string, boost::any> replVariables;
+	
+	while (getline(cin, input))
+	{
+		if (input == "exit" || input == "quit")
+			break;
+			
+		if (trim(input).empty())
+		{
+			cout << ">>> ";
+			continue;
+		}
+		
+		try
+		{
+			// Handle pragma directives
+			if (startsWith(trim(input), "#holyc"))
+			{
+				if (input.find("on") != string::npos)
+				{
+					holyCMode = true;
+					cout << "Holy C mode enabled" << endl;
+				}
+				else if (input.find("off") != string::npos)
+				{
+					holyCMode = false;
+					cout << "Holy C mode disabled" << endl;
+				}
+			}
+			// Handle expressions and statements
+			else
+			{
+				// Try to evaluate as expression first
+				boost::any result = EvalExpression(input, replVariables);
+				if (!result.empty())
+				{
+					string resultStr = AnyAsString(result);
+					if (!resultStr.empty() && resultStr != "0")
+						cout << resultStr << endl;
+				}
+			}
+		}
+		catch (const std::exception& e)
+		{
+			cout << "Error: " << e.what() << endl;
+		}
+		catch (...)
+		{
+			cout << "Unknown error occurred" << endl;
+		}
+		
+		cout << ">>> ";
+	}
+}
+
+int parseHolyZ(string script)
+{
+	//script = replace(script, "    ", "\t"); // Replace spaces with tabs (not really required, and will break purposefull whitespace in strings etc.)
+
+	// Split the script by newline, signifying a line ending
+	vector<string> beforeProcessLines = split(script, '\n');
+	vector<string> lines;
+	for (int i = 0; i < (int)beforeProcessLines.size(); i++) { // Then split said lines into indiviual words
+		if (!startsWith(trim(beforeProcessLines.at(i)), "//") && trim(beforeProcessLines.at(i)) != "")
+		{ // dont include line if it is a comment or if it is blank
+			lines.push_back(trim(beforeProcessLines.at(i)));
+		}
+	}
+#if DEVELOPER_MESSAGES
+	InterpreterLog("Contents:\n");
+#endif
+	vector<vector<string>> words;
+	for (int i = 0; i < (int)lines.size(); i++) // Then split said lines into indiviual words
+	{
+		words.push_back(split(lines.at(i), ' '));
+#if DEVELOPER_MESSAGES
+		cout << unWrapVec(words.at(i)) << endl;
+#endif
+	}
+
+#if DEVELOPER_MESSAGES
+	InterpreterLog("Gather variables & functions...");
+#endif
+	// Go through entire script and iterate through all types to see if line is a variable
+	// or function declaration, then store it with it's value
+	for (int lineNum = 0; lineNum < (int)words.size(); lineNum++)
+	{
+		//Checks if it is function
+		if (words.at(lineNum).at(0) == "func")
+		{
+			vector<vector<string>> functionContents;
+
+			string functName = split(words.at(lineNum).at(1), '(')[0];
+#if DEVELOPER_MESSAGES == true
+			InterpreterLog("Load script function " + functName + "...");
+#endif
+
+			//string args = "";
+			//if (indexInStr(unWrapVec(words.at(lineNum)), ')') - indexInStr(unWrapVec(words.at(lineNum)), '(') > 1)
+			//	for (int w = 0; w < (int)words.at(lineNum).size(); w++) // Get all words from the instantiation line: these are the args
+			//	{
+			//		if (count(words.at(lineNum).at(w), '{') == 0)
+			//			args += replace(replace(words.at(lineNum).at(w), "(", " "), ")", "");
+			//	}
+			string args = betweenChars(unWrapVec(words.at(lineNum)), '(', ')');
+			//cout << functName << "<" << args << ">" << endl;
+
+			//args = trim(replace(args, functName, ""));
+			functionContents.push_back(split(replace(args, " ", ""), ','));
+
+
+			int numOfBrackets = countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+			// Gather the contents
+			lineNum++;
+			while (lineNum < (int)words.size())
+			{
+				numOfBrackets += countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+				if (numOfBrackets == 0)
+					break;
+				functionContents.push_back(words.at(lineNum));
+				//cout << functName << "<" << args << ">" << endl;
+				lineNum++;
+			}
+			
+			functionValues[functName] = functionContents;
+		}
+		else if (words.at(lineNum).at(0) == "class")
+		{
+			string className = words.at(lineNum).at(1);
+			ClassDefinition classDef(className);
+			
+			// Simple class parsing - skip body for now
+			int numOfBrackets = countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+			lineNum++;
+			while (lineNum < (int)words.size() && numOfBrackets > 0)
+			{
+				numOfBrackets += countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+				lineNum++;
+			}
+			
+			globalClassDefinitions[className] = classDef;
+#if DEVELOPER_MESSAGES == true
+			InterpreterLog("Load script class " + className + "...");
+#endif
+		}
+		else
+		{
+			if (words.at(lineNum).at(0) == "include")
+			{
+				string scriptPath = StringRaw(words.at(lineNum).at(1));
+				string scriptTextContents;
+#if DEVELOPER_MESSAGES == true
+				InterpreterLog("Including from " + words.at(lineNum).at(1) + "...");
+#endif
+#if UNIX
+				// Get script contents as single string
+				auto ss = ostringstream{};
+				ifstream input_file(scriptPath);
+				ss << input_file.rdbuf();
+				scriptTextContents = ss.str();
+#if DEVELOPER_MESSAGES
+				InterpreterLog("Gather script contents...");
+#endif
+#elif WINDOWS
+				// Get script contents as single string
+				ifstream script(scriptPath);
+				stringstream scriptString;
+				scriptString << script.rdbuf();
+				scriptTextContents = scriptString.str();
+#if DEVELOPER_MESSAGES
+				InterpreterLog("Gather script contents...");
+#endif
+#endif
+				parseHolyZ(scriptTextContents);
+			}
+
+
+			else if (words.at(lineNum).at(0) == "string") {
+				globalVariableValues[words.at(lineNum).at(1)] = StringRaw(words.at(lineNum).at(3));
+#if DEVELOPER_MESSAGES == true
+				InterpreterLog("Load script variable " + words.at(lineNum).at(1) + "...");
+#endif
+			}
+
+			// Iterate through all types to see if line inits or
+			// re-inits a variable then store it with it's value
+			else if (countInVector(types, trim(words.at(lineNum).at(0))) > 0)
+			{
+				//cout << words.at(lineNum).at(1) << "=" << unWrapVec(slice(words.at(lineNum), 3, -1)) << "=" << AnyAsString(EvalExpression(unWrapVec(slice(words.at(lineNum), 3, -1)), variableValues)) << endl;
+				globalVariableValues[words.at(lineNum).at(1)] = EvalExpression(unWrapVec(slice(words.at(lineNum), 3, -1)), globalVariableValues);
+			}
+			//			else if (words.at(lineNum).at(0) == "int") {
+			//				globalVariableValues[words.at(lineNum).at(1)] = stoi(words.at(lineNum).at(3));
+			//#if DEVELOPER_MESSAGES == true
+			//				InterpreterLog("Load script variable " + words.at(lineNum).at(1) + "...");
+			//#endif
+			//			}
+			//			else if (words.at(lineNum).at(0) == "float") {
+			//				globalVariableValues[words.at(lineNum).at(1)] = stof(words.at(lineNum).at(3));
+			//#if DEVELOPER_MESSAGES == true
+			//				InterpreterLog("Load script variable " + words.at(lineNum).at(1) + "...");
+			//#endif
+			//			}
+			//			else if (words.at(lineNum).at(0) == "bool") {
+			//				globalVariableValues[words.at(lineNum).at(1)] = stob(words.at(lineNum).at(3));
+			//#if DEVELOPER_MESSAGES == true
+			//				InterpreterLog("Load script variable " + words.at(lineNum).at(1) + "...");
+			//#endif
+			//			}
+			else
+				LogWarning("unrecognized type \'" + words.at(lineNum).at(0) + "\' on line: " + to_string(lineNum));
+		}
+	}
+
+	return 0;
+}
 // Holy C type conversion functions
 boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::any>& args)
 {
