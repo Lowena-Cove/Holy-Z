@@ -1,0 +1,15 @@
+{
+  "name": "holy-z",
+  "version": "1.0.0",
+  "description": "Holy-Z programming language interpreter",
+  "dependencies": [
+    "sdl2",
+    "sdl2-image",
+    "sdl2-ttf",
+    {
+      "name": "boost-system",
+      "version>=": "1.70.0"
+    },
+    "boost-filesystem"
+  ]
+}
