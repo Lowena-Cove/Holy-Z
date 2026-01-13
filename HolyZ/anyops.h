@@ -277,3 +277,20 @@ int any_type(const boost::any& val)
 								catch (boost::bad_any_cast) // Does not convert, return
 								{
 #endif
+
+// Gets type of 'any' val as string for runtime type checking
+string any_type_name(const boost::any& val)
+{
+	int typeNum = any_type(val);
+	switch (typeNum) {
+		case 0: return "int";
+		case 1: return "float";
+		case 2: return "bool";
+		case 3: return "string";
+		case 4: return "Sprite";
+		case 5: return "Vec2";
+		case 6: return "Text";
+		case 7: return "object";
+		default: return "null";
+	}
+}

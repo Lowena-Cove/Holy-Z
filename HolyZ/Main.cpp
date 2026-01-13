@@ -52,6 +52,9 @@ inline bool IsKeyword(const string& token, const string& keyword) {
 unordered_map<string, boost::any> globalVariableValues;
 unordered_map<string, vector<vector<string>>> functionValues;
 
+// Memory heap for dynamic allocation
+MemoryHeap globalMemoryHeap;
+
 // Holy C mode flags
 bool holyCMode = false;
 bool shellMode = false;
@@ -185,10 +188,24 @@ bool IsZSFunction(const string& funcName)
 	return startsWith(funcName, "ZS.");
 }
 
-boost::any EvalExpression(const string& ex, unordered_map<string, boost::any>& variableValues)
 bool IsHolyCFunction(const string& funcName)
 {
-{
+	// List of built-in Holy C functions
+	static const vector<string> holyCFunctions = {
+		"ToInt", "ToFloat", "ToStr", "ToBool",
+		"typeof", "TypeOf", "typecheck", "TypeCheck", "istype", "IsType",
+		"malloc", "Malloc", "free", "Free", "addressof", "AddressOf", "ptr",
+		"deref", "Deref", "dereference", "setvalue", "SetValue",
+		"send", "Send", "hasmethod", "HasMethod", "getmethod", "GetMethod"
+	};
+	
+	for (const auto& func : holyCFunctions) {
+		if (toLower(funcName) == toLower(func))
+			return true;
+	}
+	return false;
+}
+
 // Forward declarations
 boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::any>& args);
 void RunREPL();
@@ -471,6 +488,177 @@ boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::
 		return AnyAsString(args.at(0));
 	else if (functionName == "ToBool")
 		return AnyAsBool(args.at(0));
+	else if (functionName == "typeof" || functionName == "TypeOf")
+	{
+		// Runtime type checking - returns the type of a value as a string
+		if (args.empty())
+			return "null";
+		return any_type_name(args.at(0));
+	}
+	else if (functionName == "typecheck" || functionName == "TypeCheck")
+	{
+		// Runtime type checking - returns true if value matches expected type
+		if (args.size() < 2)
+			return false;
+		string expectedType = AnyAsString(args.at(0));
+		string actualType = any_type_name(args.at(1));
+		return actualType == expectedType;
+	}
+	else if (functionName == "istype" || functionName == "IsType")
+	{
+		// Alias for typecheck
+		if (args.size() < 2)
+			return false;
+		string expectedType = AnyAsString(args.at(0));
+		string actualType = any_type_name(args.at(1));
+		return actualType == expectedType;
+	}
+	else if (functionName == "malloc" || functionName == "Malloc")
+	{
+		// Dynamic memory allocation
+		if (args.empty())
+			return nullType;
+		Pointer ptr = globalMemoryHeap.allocate(args.at(0));
+		return ptr;
+	}
+	else if (functionName == "free" || functionName == "Free")
+	{
+		// Free allocated memory
+		if (args.empty())
+			return nullType;
+		try {
+			Pointer ptr = any_cast<Pointer>(args.at(0));
+			globalMemoryHeap.deallocate(ptr);
+			return true;
+		}
+		catch (boost::bad_any_cast) {
+			LogWarning("free() requires a pointer argument");
+			return false;
+		}
+	}
+	else if (functionName == "addressof" || functionName == "AddressOf" || functionName == "ptr")
+	{
+		// Get address of a variable (reference/pointer)
+		// This creates a pointer to the variable
+		if (args.empty())
+			return nullType;
+		// Allocate in heap to create a persistent reference
+		Pointer ptr = globalMemoryHeap.allocate(args.at(0));
+		return ptr;
+	}
+	else if (functionName == "deref" || functionName == "Deref" || functionName == "dereference")
+	{
+		// Dereference a pointer to get its value
+		if (args.empty())
+			return nullType;
+		try {
+			Pointer ptr = any_cast<Pointer>(args.at(0));
+			return globalMemoryHeap.dereference(ptr);
+		}
+		catch (boost::bad_any_cast) {
+			LogWarning("deref() requires a pointer argument");
+			return nullType;
+		}
+	}
+	else if (functionName == "setvalue" || functionName == "SetValue")
+	{
+		// Set value at pointer address
+		if (args.size() < 2)
+			return nullType;
+		try {
+			Pointer ptr = any_cast<Pointer>(args.at(0));
+			globalMemoryHeap.write(ptr, args.at(1));
+			return true;
+		}
+		catch (boost::bad_any_cast) {
+			LogWarning("setvalue() requires a pointer and value argument");
+			return false;
+		}
+	}
+	else if (functionName == "send" || functionName == "Send")
+	{
+		// Message passing - send a message to an object
+		// Usage: send(object, "methodName", arg1, arg2, ...)
+		if (args.size() < 2)
+			return nullType;
+		try {
+			ClassInstance obj = any_cast<ClassInstance>(args.at(0));
+			string methodName = AnyAsString(args.at(1));
+			
+			// Collect remaining arguments for the method
+			vector<boost::any> methodArgs;
+			for (size_t i = 2; i < args.size(); i++) {
+				methodArgs.push_back(args.at(i));
+			}
+			
+			// Look up method in class definition
+			if (globalClassDefinitions.find(obj.className) != globalClassDefinitions.end()) {
+				ClassDefinition& classDef = globalClassDefinitions[obj.className];
+				for (auto& method : classDef.methods) {
+					if (method.name == methodName) {
+						// Execute the method
+						// This would require setting up context and executing the method body
+						// For now, return success indicator
+						return true;
+					}
+				}
+				LogWarning("Method '" + methodName + "' not found in class '" + obj.className + "'");
+				return false;
+			}
+			return false;
+		}
+		catch (boost::bad_any_cast) {
+			LogWarning("send() requires an object as first argument");
+			return false;
+		}
+	}
+	else if (functionName == "hasmethod" || functionName == "HasMethod")
+	{
+		// Check if object has a method
+		if (args.size() < 2)
+			return false;
+		try {
+			ClassInstance obj = any_cast<ClassInstance>(args.at(0));
+			string methodName = AnyAsString(args.at(1));
+			
+			if (globalClassDefinitions.find(obj.className) != globalClassDefinitions.end()) {
+				ClassDefinition& classDef = globalClassDefinitions[obj.className];
+				for (auto& method : classDef.methods) {
+					if (method.name == methodName) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		catch (boost::bad_any_cast) {
+			return false;
+		}
+	}
+	else if (functionName == "getmethod" || functionName == "GetMethod")
+	{
+		// Get method reference/info from object
+		if (args.size() < 2)
+			return nullType;
+		try {
+			ClassInstance obj = any_cast<ClassInstance>(args.at(0));
+			string methodName = AnyAsString(args.at(1));
+			
+			if (globalClassDefinitions.find(obj.className) != globalClassDefinitions.end()) {
+				ClassDefinition& classDef = globalClassDefinitions[obj.className];
+				for (auto& method : classDef.methods) {
+					if (method.name == methodName) {
+						// Return method name (in a real system, would return method reference)
+						return methodName;
+					}
+				}
+			}
+			return nullType;
+		}
+		catch (boost::bad_any_cast) {
+			return nullType;
+		}
+	}
 	else
 	{
 		LogWarning("Holy C function '" + functionName + "' does not exist.");

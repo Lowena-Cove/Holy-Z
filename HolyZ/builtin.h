@@ -90,6 +90,58 @@ public:
 	ClassInstance(const string& name) : className(name) {}
 };
 
+// Pointer support for direct memory manipulation
+class Pointer {
+public:
+	void* address;
+	string pointedType;  // Type that the pointer points to
+	
+	Pointer() : address(nullptr), pointedType("void") {}
+	Pointer(void* addr, const string& type = "void") 
+		: address(addr), pointedType(type) {}
+	
+	// Dereference operator simulation
+	boost::any dereference() const {
+		if (address == nullptr) return boost::any();
+		// Type-specific dereferencing would be handled at runtime
+		return boost::any();
+	}
+};
+
+// Memory heap for allocating values (simulates dynamic allocation)
+class MemoryHeap {
+private:
+	unordered_map<long long, boost::any> heap;
+	long long nextAddress = 1000;
+	
+public:
+	Pointer allocate(const boost::any& value) {
+		heap[nextAddress] = value;
+		Pointer ptr(reinterpret_cast<void*>(nextAddress));
+		nextAddress += sizeof(value);
+		return ptr;
+	}
+	
+	void deallocate(const Pointer& ptr) {
+		heap.erase(reinterpret_cast<long long>(ptr.address));
+	}
+	
+	boost::any dereference(const Pointer& ptr) {
+		auto it = heap.find(reinterpret_cast<long long>(ptr.address));
+		if (it != heap.end()) {
+			return it->second;
+		}
+		return boost::any();
+	}
+	
+	void write(const Pointer& ptr, const boost::any& value) {
+		heap[reinterpret_cast<long long>(ptr.address)] = value;
+	}
+};
+
+// Global memory heap instance
+extern MemoryHeap globalMemoryHeap;
+
 // Global class definitions
 unordered_map<string, ClassDefinition> globalClassDefinitions;
 

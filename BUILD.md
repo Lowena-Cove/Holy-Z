@@ -17,7 +17,7 @@ vcpkg is a C++ package manager that makes it easy to manage dependencies.
 
 2. **Build Holy-Z with vcpkg integration**:
    ```powershell
-   cd <path-to-Holy-Z>/ZSharp
+   cd <path-to-Holy-Z>/HolyZ
    cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE='<vcpkg-root>/scripts/buildsystems/vcpkg.cmake'
    cmake --build build --config Release
    ```
@@ -41,7 +41,7 @@ If you prefer to install dependencies manually:
 
 3. **Build**:
    ```powershell
-   cd ZSharp
+   cd HolyZ
    cmake -B build -S .
    cmake --build build --config Release
    ```
@@ -60,7 +60,7 @@ If you prefer to install dependencies manually:
 
 2. **Build**:
    ```bash
-   cd ZSharp
+   cd HolyZ
    cmake -B build -S .
    cmake --build build
    ```
@@ -68,8 +68,8 @@ If you prefer to install dependencies manually:
 ## Build Output
 
 The compiled executable will be located in:
-- Windows: `ZSharp/build/Release/HolyZ.exe` or `ZSharp/build/Debug/HolyZ.exe`
-- Linux: `ZSharp/build/HolyZ`
+- Windows: `HolyZ/build/Release/HolyZ.exe` or `HolyZ/build/Debug/HolyZ.exe`
+- Linux: `HolyZ/build/HolyZ`
 
 ## Troubleshooting
 

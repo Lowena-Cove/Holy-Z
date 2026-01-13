@@ -8,7 +8,19 @@
 #include <string>
 #include <type_traits>
 #include <utility>
+#ifdef _WIN32
 #include <windows.h>
+#else
+#include <cstdint>
+// Minimal stubs so the header compiles on non-Windows platforms.
+using WORD = std::uint16_t;
+using HANDLE = void*;
+struct CONSOLE_SCREEN_BUFFER_INFO { WORD wAttributes; };
+constexpr int STD_OUTPUT_HANDLE = 0;
+inline HANDLE GetStdHandle(int) { return nullptr; }
+inline bool GetConsoleScreenBufferInfo(HANDLE, CONSOLE_SCREEN_BUFFER_INFO* info) { if (info) info->wAttributes = 7; return true; }
+inline void SetConsoleTextAttribute(HANDLE, unsigned short) {}
+#endif
 
 namespace hue
 {
