@@ -52,11 +52,7 @@ jobs:
     - name: Install dependencies (Windows)
       if: matrix.platform == 'windows'
       run: |
-        vcpkg install sdl2:x64-windows
-        vcpkg install sdl2-image:x64-windows
-        vcpkg install sdl2-ttf:x64-windows
-        vcpkg install boost-system:x64-windows
-        vcpkg install boost-filesystem:x64-windows
+        vcpkg install --triplet x64-windows
 
     - name: Configure CMake (Linux)
       if: matrix.platform == 'linux'
