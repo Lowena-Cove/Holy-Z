@@ -209,7 +209,7 @@ public:
 		: isOk(false), error(err), errorType(errType) {}
 	
 	string toString() const {
-		if (isOk) return "Ok(" + any_type_name(value) + ")";
+		if (isOk) return "Ok(value)";
 		return "Err(" + errorType + ": " + error + ")";
 	}
 };
@@ -233,7 +233,7 @@ public:
 	}
 	
 	string toString() const {
-		if (isSome) return "Some(" + any_type_name(value) + ")";
+		if (isSome) return "Some(value)";
 		return "None";
 	}
 };

@@ -59,6 +59,10 @@ MemoryHeap globalMemoryHeap;
 unordered_map<string, bool> immutableVariables;  // true if variable is immutable (let)
 unordered_map<string, bool> borrowedVariables;   // true if variable is borrowed (borrowed reference)
 
+// Trait system - Rust-inspired
+unordered_map<string, TraitDefinition> globalTraits;      // All defined traits
+vector<TraitImplementation> globalTraitImpls;             // All trait-type implementations
+
 // Holy C mode flags
 bool holyCMode = false;
 bool shellMode = false;
@@ -204,7 +208,8 @@ bool IsHolyCFunction(const string& funcName)
 		// Result/Option functions (Rust-like)
 		"Ok", "Err", "Some", "None", "isOk", "IsOk", "isErr", "IsErr", 
 		"isSome", "IsSome", "isNone", "IsNone", "unwrap", "Unwrap",
-		"expect", "Expect", "unwrapOr", "UnwrapOr", "match", "Match"
+		"expect", "Expect", "unwrapOr", "UnwrapOr"
+		// Pattern matching (match/Match) - future implementation
 	};
 	
 	for (const auto& func : holyCFunctions) {
