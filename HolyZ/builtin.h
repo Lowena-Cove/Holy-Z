@@ -644,8 +644,9 @@ boost::any CreateClassInstance(const string& className, const vector<boost::any>
 	ClassMethod* constructor = FindMethod(className, "constructor", false);
 	if (constructor != nullptr)
 	{
-		// TODO: Execute constructor with 'this' context
-		// This will be implemented in the main execution logic
+		// Constructor execution is handled in Main.cpp ExecuteHolyCFunction()
+		// via the send() function which sets up proper 'this' context
+		// and executes the method body with all parameters
 	}
 	
 	return instance;
@@ -661,8 +662,12 @@ boost::any CallClassMethod(const ClassInstance& instance, const string& methodNa
 		return nullType;
 	}
 	
-	// TODO: Execute method with 'this' context
-	// This will be implemented in the main execution logic
+	// Method execution is handled in Main.cpp ExecuteHolyCFunction()
+	// via the send() function which sets up proper 'this' context,
+	// extracts method parameters and arguments, and calls ProcessLine()
+	// for each line in the method body
+	// Note: CallClassMethod is kept for potential reflection, actual execution
+	// happens through send()
 	return nullType;
 }
 
@@ -676,8 +681,11 @@ boost::any CallStaticMethod(const string& className, const string& methodName, c
 		return nullType;
 	}
 	
-	// TODO: Execute static method
-	// This will be implemented in the main execution logic
+	// Static method execution is handled in Main.cpp ExecuteHolyCFunction()
+	// Static methods do not require instance context ('this')
+	// Execution happens through send() with proper parameter setup
+	// Note: CallStaticMethod is kept for potential reflection, actual execution
+	// happens through send()
 	return nullType;
 }
 

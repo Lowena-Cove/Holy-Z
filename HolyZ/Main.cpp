@@ -596,9 +596,28 @@ boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::
 				ClassDefinition& classDef = globalClassDefinitions[obj.className];
 				for (auto& method : classDef.methods) {
 					if (method.name == methodName) {
-						// Execute the method
-						// This would require setting up context and executing the method body
-						// For now, return success indicator
+						// Execute the method with proper context
+						ClassInstance* oldThisContext = currentThisContext;
+						currentThisContext = &obj;
+						
+						try {
+							unordered_map<string, boost::any> methodVariables;
+							// Set up method parameters
+							for (size_t i = 0; i < method.parameters.size() && i < methodArgs.size(); i++) {
+								methodVariables[method.parameters[i]] = methodArgs[i];
+							}
+							
+							// Execute method body
+							for (size_t lineIdx = 1; lineIdx < method.body.size(); lineIdx++) {
+								int line = lineIdx;
+								ProcessLine(method.body, line, methodVariables);
+							}
+						}
+						catch (const std::exception& e) {
+							LogWarning("Error executing method: " + string(e.what()));
+						}
+						
+						currentThisContext = oldThisContext;
 						return true;
 					}
 				}
@@ -1132,13 +1151,71 @@ int parseHolyZ(string script)
 			string className = words.at(lineNum).at(1);
 			ClassDefinition classDef(className);
 			
-			// Simple class parsing - skip body for now
+			// Parse class body for methods and attributes
 			int numOfBrackets = countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
 			lineNum++;
+			vector<vector<string>> classBodyLines;
+			
 			while (lineNum < (int)words.size() && numOfBrackets > 0)
 			{
 				numOfBrackets += countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+				if (numOfBrackets > 0) {
+					classBodyLines.push_back(words.at(lineNum));
+				}
 				lineNum++;
+			}
+			
+			// Parse methods and attributes from class body
+			for (size_t i = 0; i < classBodyLines.size(); i++) {
+				if (classBodyLines[i].size() > 0) {
+					// Check if this is a method (contains parentheses)
+					string firstWord = unWrapVec(classBodyLines[i]);
+					bool isMethod = false;
+					vector<string> methodParams;
+					string methodName;
+					
+					for (const auto& word : classBodyLines[i]) {
+						if (word.find('(') != string::npos && word.find(')') != string::npos) {
+							isMethod = true;
+							// Extract method name and parameters
+							methodName = word.substr(0, word.find('('));
+							string paramStr = betweenChars(word, '(', ')');
+							if (!paramStr.empty()) {
+								methodParams = split(paramStr, ',');
+							}
+							break;
+						}
+					}
+					
+					if (isMethod && !methodName.empty()) {
+						// Collect method body
+						vector<vector<string>> methodBody;
+						methodBody.push_back(classBodyLines[i]);
+						i++;
+						int methodBrackets = countInVector(unWrapVec(classBodyLines[i-1]), "{") - countInVector(unWrapVec(classBodyLines[i-1]), "}");
+						
+						while (i < classBodyLines.size() && methodBrackets > 0) {
+							methodBrackets += countInVector(unWrapVec(classBodyLines[i]), "{") - countInVector(unWrapVec(classBodyLines[i]), "}");
+							methodBody.push_back(classBodyLines[i]);
+							i++;
+						}
+						i--; // Adjust for loop increment
+						
+						ClassMethod method(methodName, methodParams, methodBody);
+						classDef.methods.push_back(method);
+					} else {
+						// This is likely an attribute
+						if (classBodyLines[i].size() >= 2) {
+							string attrType = classBodyLines[i].at(0);
+							string attrName = classBodyLines[i].at(1);
+							if (attrName.back() == ';') {
+								attrName.pop_back();
+							}
+							ClassAttribute attr(attrName, attrType);
+							classDef.attributes.push_back(attr);
+						}
+					}
+				}
 			}
 			
 			globalClassDefinitions[className] = classDef;
@@ -1695,13 +1772,71 @@ void RunREPL()
 			string className = words.at(lineNum).at(1);
 			ClassDefinition classDef(className);
 			
-			// Simple class parsing - skip body for now
+			// Parse class body for methods and attributes
 			int numOfBrackets = countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
 			lineNum++;
+			vector<vector<string>> classBodyLines;
+			
 			while (lineNum < (int)words.size() && numOfBrackets > 0)
 			{
 				numOfBrackets += countInVector(words.at(lineNum), "{") - countInVector(words.at(lineNum), "}");
+				if (numOfBrackets > 0) {
+					classBodyLines.push_back(words.at(lineNum));
+				}
 				lineNum++;
+			}
+			
+			// Parse methods and attributes from class body
+			for (size_t i = 0; i < classBodyLines.size(); i++) {
+				if (classBodyLines[i].size() > 0) {
+					// Check if this is a method (contains parentheses)
+					string firstWord = unWrapVec(classBodyLines[i]);
+					bool isMethod = false;
+					vector<string> methodParams;
+					string methodName;
+					
+					for (const auto& word : classBodyLines[i]) {
+						if (word.find('(') != string::npos && word.find(')') != string::npos) {
+							isMethod = true;
+							// Extract method name and parameters
+							methodName = word.substr(0, word.find('('));
+							string paramStr = betweenChars(word, '(', ')');
+							if (!paramStr.empty()) {
+								methodParams = split(paramStr, ',');
+							}
+							break;
+						}
+					}
+					
+					if (isMethod && !methodName.empty()) {
+						// Collect method body
+						vector<vector<string>> methodBody;
+						methodBody.push_back(classBodyLines[i]);
+						i++;
+						int methodBrackets = countInVector(unWrapVec(classBodyLines[i-1]), "{") - countInVector(unWrapVec(classBodyLines[i-1]), "}");
+						
+						while (i < classBodyLines.size() && methodBrackets > 0) {
+							methodBrackets += countInVector(unWrapVec(classBodyLines[i]), "{") - countInVector(unWrapVec(classBodyLines[i]), "}");
+							methodBody.push_back(classBodyLines[i]);
+							i++;
+						}
+						i--; // Adjust for loop increment
+						
+						ClassMethod method(methodName, methodParams, methodBody);
+						classDef.methods.push_back(method);
+					} else {
+						// This is likely an attribute
+						if (classBodyLines[i].size() >= 2) {
+							string attrType = classBodyLines[i].at(0);
+							string attrName = classBodyLines[i].at(1);
+							if (attrName.back() == ';') {
+								attrName.pop_back();
+							}
+							ClassAttribute attr(attrName, attrType);
+							classDef.attributes.push_back(attr);
+						}
+					}
+				}
 			}
 			
 			globalClassDefinitions[className] = classDef;
