@@ -291,6 +291,19 @@ string any_type_name(const boost::any& val)
 		case 5: return "Vec2";
 		case 6: return "Text";
 		case 7: return "object";
+		case 8: 
+			try {
+				any_cast<ResultValue>(val);
+				return "Result";
+			} catch (...) {}
+			break;
+		case 9:
+			try {
+				any_cast<OptionValue>(val);
+				return "Option";
+			} catch (...) {}
+			break;
 		default: return "null";
 	}
+	return "null";
 }

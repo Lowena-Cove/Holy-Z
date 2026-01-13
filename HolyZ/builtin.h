@@ -35,7 +35,7 @@
 using namespace std;
 using namespace boost;
 
-vector<string> types = { "int", "float", "string", "bool", "void", "null", "Sprite", "Vec2", "Text" };
+vector<string> types = { "int", "float", "string", "bool", "void", "null", "Sprite", "Vec2", "Text", "Result", "Option" };
 // Forward declarations for Holy C classes
 class ClassDefinition;
 class ClassInstance;
@@ -194,6 +194,88 @@ class BREAK {
 public:
 	string type = "BREAK";
 };
+
+// Rust-like Result type: either Ok(value) or Err(error)
+class ResultValue {
+public:
+	bool isOk;  // true for Ok, false for Err
+	boost::any value;  // The success value
+	string error;  // The error message
+	string errorType;  // Type of error (e.g., "IOError", "ParseError")
+	
+	ResultValue() : isOk(true), error(""), errorType("") {}
+	ResultValue(const boost::any& val) : isOk(true), value(val), error(""), errorType("") {}
+	ResultValue(const string& err, const string& errType = "Error") 
+		: isOk(false), error(err), errorType(errType) {}
+	
+	string toString() const {
+		if (isOk) return "Ok(" + any_type_name(value) + ")";
+		return "Err(" + errorType + ": " + error + ")";
+	}
+};
+
+// Rust-like Option type: either Some(value) or None
+class OptionValue {
+public:
+	bool isSome;  // true for Some, false for None
+	boost::any value;  // The contained value
+	
+	OptionValue() : isSome(false) {}
+	OptionValue(const boost::any& val) : isSome(true), value(val) {}
+	
+	// Factory methods
+	static OptionValue Some(const boost::any& val) {
+		return OptionValue(val);
+	}
+	
+	static OptionValue None() {
+		return OptionValue();
+	}
+	
+	string toString() const {
+		if (isSome) return "Some(" + any_type_name(value) + ")";
+		return "None";
+	}
+};
+
+// Trait support - improved trait system
+class TraitDefinition {
+public:
+	string traitName;
+	vector<pair<string, vector<string>>> methods;  // method name and parameters
+	unordered_map<string, vector<vector<string>>> defaultImplementations;  // default method bodies
+	
+	TraitDefinition() {}
+	TraitDefinition(const string& name) : traitName(name) {}
+	
+	void addMethod(const string& methodName, const vector<string>& params) {
+		methods.push_back({methodName, params});
+	}
+	
+	void setDefaultImplementation(const string& methodName, const vector<vector<string>>& body) {
+		defaultImplementations[methodName] = body;
+	}
+	
+	bool hasDefaultImpl(const string& methodName) const {
+		return defaultImplementations.find(methodName) != defaultImplementations.end();
+	}
+};
+
+// Trait implementation for a type
+class TraitImplementation {
+public:
+	string typeName;
+	string traitName;
+	unordered_map<string, vector<vector<string>>> implementations;  // method implementations
+	
+	TraitImplementation() {}
+	TraitImplementation(const string& type, const string& trait) 
+		: typeName(type), traitName(trait) {}
+};
+
+// Global trait definitions and implementations
+extern unordered_map<string, TraitDefinition> globalTraits;
+extern vector<TraitImplementation> globalTraitImpls;
 
 boost::any nullType;
 boost::any breakReOp;

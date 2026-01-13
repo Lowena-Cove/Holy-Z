@@ -55,6 +55,10 @@ unordered_map<string, vector<vector<string>>> functionValues;
 // Memory heap for dynamic allocation
 MemoryHeap globalMemoryHeap;
 
+// Immutability tracking - Rust-inspired
+unordered_map<string, bool> immutableVariables;  // true if variable is immutable (let)
+unordered_map<string, bool> borrowedVariables;   // true if variable is borrowed (borrowed reference)
+
 // Holy C mode flags
 bool holyCMode = false;
 bool shellMode = false;
@@ -196,7 +200,11 @@ bool IsHolyCFunction(const string& funcName)
 		"typeof", "TypeOf", "typecheck", "TypeCheck", "istype", "IsType",
 		"malloc", "Malloc", "free", "Free", "addressof", "AddressOf", "ptr",
 		"deref", "Deref", "dereference", "setvalue", "SetValue",
-		"send", "Send", "hasmethod", "HasMethod", "getmethod", "GetMethod"
+		"send", "Send", "hasmethod", "HasMethod", "getmethod", "GetMethod",
+		// Result/Option functions (Rust-like)
+		"Ok", "Err", "Some", "None", "isOk", "IsOk", "isErr", "IsErr", 
+		"isSome", "IsSome", "isNone", "IsNone", "unwrap", "Unwrap",
+		"expect", "Expect", "unwrapOr", "UnwrapOr", "match", "Match"
 	};
 	
 	for (const auto& func : holyCFunctions) {
@@ -676,6 +684,139 @@ boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::
 		}
 		catch (boost::bad_any_cast) {
 			return nullType;
+		}
+	}
+	// Rust-like Result operations
+	else if (functionName == "Ok")
+	{
+		// Create a successful Result: Ok(value)
+		if (args.empty())
+			return ResultValue();
+		return ResultValue(args.at(0));
+	}
+	else if (functionName == "Err")
+	{
+		// Create an error Result: Err(error_message, error_type)
+		if (args.empty())
+			return ResultValue("Unknown error");
+		string errorMsg = AnyAsString(args.at(0));
+		string errorType = (args.size() > 1) ? AnyAsString(args.at(1)) : "Error";
+		return ResultValue(errorMsg, errorType);
+	}
+	else if (functionName == "isOk" || functionName == "IsOk")
+	{
+		// Check if Result is Ok
+		if (args.empty())
+			return false;
+		try {
+			ResultValue res = any_cast<ResultValue>(args.at(0));
+			return res.isOk;
+		}
+		catch (boost::bad_any_cast) {
+			return false;
+		}
+	}
+	else if (functionName == "isErr" || functionName == "IsErr")
+	{
+		// Check if Result is Err
+		if (args.empty())
+			return true;
+		try {
+			ResultValue res = any_cast<ResultValue>(args.at(0));
+			return !res.isOk;
+		}
+		catch (boost::bad_any_cast) {
+			return false;
+		}
+	}
+	else if (functionName == "unwrap" || functionName == "Unwrap")
+	{
+		// Unwrap Result - panics if Err
+		if (args.empty())
+			return nullType;
+		try {
+			ResultValue res = any_cast<ResultValue>(args.at(0));
+			if (!res.isOk) {
+				LogWarning("Unwrap called on Err: " + res.error);
+				return nullType;
+			}
+			return res.value;
+		}
+		catch (boost::bad_any_cast) {
+			return nullType;
+		}
+	}
+	else if (functionName == "expect" || functionName == "Expect")
+	{
+		// Unwrap with custom panic message
+		if (args.empty())
+			return nullType;
+		try {
+			ResultValue res = any_cast<ResultValue>(args.at(0));
+			if (!res.isOk) {
+				string msg = (args.size() > 1) ? AnyAsString(args.at(1)) : res.error;
+				LogWarning("Expect failed: " + msg);
+				return nullType;
+			}
+			return res.value;
+		}
+		catch (boost::bad_any_cast) {
+			return nullType;
+		}
+	}
+	else if (functionName == "unwrapOr" || functionName == "UnwrapOr")
+	{
+		// Unwrap Result with default value
+		if (args.empty())
+			return nullType;
+		try {
+			ResultValue res = any_cast<ResultValue>(args.at(0));
+			if (!res.isOk && args.size() > 1) {
+				return args.at(1);  // Return default value
+			}
+			return res.isOk ? res.value : nullType;
+		}
+		catch (boost::bad_any_cast) {
+			return (args.size() > 1) ? args.at(1) : nullType;
+		}
+	}
+	// Rust-like Option operations
+	else if (functionName == "Some")
+	{
+		// Create an Option with a value: Some(value)
+		if (args.empty())
+			return OptionValue::None();
+		return OptionValue::Some(args.at(0));
+	}
+	else if (functionName == "None")
+	{
+		// Create an empty Option: None
+		return OptionValue::None();
+	}
+	else if (functionName == "isSome" || functionName == "IsSome")
+	{
+		// Check if Option is Some
+		if (args.empty())
+			return false;
+		try {
+			OptionValue opt = any_cast<OptionValue>(args.at(0));
+			return opt.isSome;
+		}
+		catch (boost::bad_any_cast) {
+			return false;
+		}
+	}
+	else if (functionName == "isNone" || functionName == "IsNone")
+	{
+		// Check if Option is None
+		if (args.empty())
+			return true;
+		try {
+			OptionValue opt = any_cast<OptionValue>(args.at(0));
+			return !opt.isSome;
+		}
+		catch (boost::bad_any_cast) {
+			return true;
 		}
 	}
 	else
