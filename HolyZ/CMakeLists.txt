@@ -25,7 +25,28 @@ endif()
 SET(programName Slang)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeFiles/")
 
-add_executable (HolyZ Main.cpp main.h anyops.h builtin.h strops.cpp strops.h eval.cpp eval.h graphics.h ZS.h color.hpp)
+# Source files for the HolyZ interpreter
+set(HOLYZ_SOURCES
+    Main.cpp
+    strops.cpp
+    eval.cpp
+    system_control.cpp
+)
+
+# Header files
+set(HOLYZ_HEADERS
+    main.h
+    anyops.h
+    builtin.h
+    strops.h
+    eval.h
+    graphics.h
+    ZS.h
+    color.hpp
+    system_control.h
+)
+
+add_executable(HolyZ ${HOLYZ_SOURCES} ${HOLYZ_HEADERS})
 
 # Boost Configuration (Required)
 set(Boost_USE_STATIC_LIBS OFF) 
