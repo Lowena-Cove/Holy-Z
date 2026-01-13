@@ -5,6 +5,12 @@
   "default-features": [],
   "builtin-baseline": "a42af01b72c28a8e1d7b48107b33e4f286a55ef6",
   "vcpkg-configuration": {},
+  "overrides": [
+    {
+      "name": "boost-system",
+      "version": "1.83.0"
+    }
+  ],
   "dependencies": [
     "sdl2",
     "sdl2-image",
