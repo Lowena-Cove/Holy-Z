@@ -26,7 +26,7 @@ events:
       Microsoft (R) Build Engine version 16.11.6+a918ceb31 for .NET Framework
       Copyright (C) Microsoft Corporation. All rights reserved.
       
-      Build started 13/01/2026 19:33:51.
+      Build started 13/01/2026 19:36:25.
       Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\3.29.2\\CompilerIdC\\CompilerIdC.vcxproj" on node 1 (default targets).
       PrepareForBuild:
         Creating directory "Debug\\".
@@ -59,7 +59,7 @@ events:
           0 Warning(s)
           0 Error(s)
       
-      Time Elapsed 00:00:01.77
+      Time Elapsed 00:00:00.98
       
       
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
@@ -87,7 +87,7 @@ events:
       Microsoft (R) Build Engine version 16.11.6+a918ceb31 for .NET Framework
       Copyright (C) Microsoft Corporation. All rights reserved.
       
-      Build started 13/01/2026 19:33:54.
+      Build started 13/01/2026 19:36:26.
       Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\3.29.2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" on node 1 (default targets).
       PrepareForBuild:
         Creating directory "Debug\\".
@@ -120,7 +120,7 @@ events:
           0 Warning(s)
           0 Error(s)
       
-      Time Elapsed 00:00:01.09
+      Time Elapsed 00:00:00.84
       
       
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -139,8 +139,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-me1n1h"
-      binary: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-me1n1h"
+      source: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-0al5el"
+      binary: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-0al5el"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
       CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
@@ -149,46 +149,46 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-me1n1h'
+        Change Dir: 'C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-0al5el'
         
-        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe" cmTC_fa7be.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:n
+        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe" cmTC_4943a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:n
         Microsoft (R) Build Engine version 16.11.6+a918ceb31 for .NET Framework
         Copyright (C) Microsoft Corporation. All rights reserved.
         
-        Build started 13/01/2026 19:33:55.
-        Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-me1n1h\\cmTC_fa7be.vcxproj" on node 1 (default targets).
+        Build started 13/01/2026 19:36:27.
+        Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0al5el\\cmTC_4943a.vcxproj" on node 1 (default targets).
         PrepareForBuild:
-          Creating directory "cmTC_fa7be.dir\\Debug\\".
-          Creating directory "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-me1n1h\\Debug\\".
-          Creating directory "cmTC_fa7be.dir\\Debug\\cmTC_fa7be.tlog\\".
+          Creating directory "cmTC_4943a.dir\\Debug\\".
+          Creating directory "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0al5el\\Debug\\".
+          Creating directory "cmTC_4943a.dir\\Debug\\cmTC_4943a.tlog\\".
         InitializeBuildStatus:
-          Creating "cmTC_fa7be.dir\\Debug\\cmTC_fa7be.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Creating "cmTC_4943a.dir\\Debug\\cmTC_4943a.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
         VcpkgTripletSelection:
           Using triplet "x64-windows" from "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\"
           Using normalized configuration "Release"
         VcpkgCheckManifestRoot:
           The vcpkg manifest was disabled, but we found a manifest file in C:\\Users\\charl\\Documents\\Holy-Z\\. You may want to enable vcpkg manifests in your properties page or pass /p:VcpkgEnableManifest=true to the msbuild invocation.
         ClCompile:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\CL.exe /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_fa7be.dir\\Debug\\\\" /Fd"cmTC_fa7be.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\CL.exe /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_4943a.dir\\Debug\\\\" /Fd"cmTC_4943a.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
           Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x64
-          CMakeCCompilerABI.c
           Copyright (C) Microsoft Corporation.  All rights reserved.
-          cl /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_fa7be.dir\\Debug\\\\" /Fd"cmTC_fa7be.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
+          CMakeCCompilerABI.c
+          cl /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_4943a.dir\\Debug\\\\" /Fd"cmTC_4943a.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c"
         Link:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-me1n1h\\Debug\\cmTC_fa7be.exe" /INCREMENTAL /ILK:"cmTC_fa7be.dir\\Debug\\cmTC_fa7be.ilk" /NOLOGO /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib" /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-me1n1h/Debug/cmTC_fa7be.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-me1n1h/Debug/cmTC_fa7be.lib" /MACHINE:X64  /machine:x64 cmTC_fa7be.dir\\Debug\\CMakeCCompilerABI.obj
-          cmTC_fa7be.vcxproj -> C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-me1n1h\\Debug\\cmTC_fa7be.exe
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0al5el\\Debug\\cmTC_4943a.exe" /INCREMENTAL /ILK:"cmTC_4943a.dir\\Debug\\cmTC_4943a.ilk" /NOLOGO /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib" /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-0al5el/Debug/cmTC_4943a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-0al5el/Debug/cmTC_4943a.lib" /MACHINE:X64  /machine:x64 cmTC_4943a.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_4943a.vcxproj -> C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0al5el\\Debug\\cmTC_4943a.exe
         AppLocalFromInstalled:
-          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-me1n1h\\Debug\\cmTC_fa7be.exe" "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\bin" "cmTC_fa7be.dir\\Debug\\cmTC_fa7be.tlog\\cmTC_fa7be.write.1u.tlog" "cmTC_fa7be.dir\\Debug\\vcpkg.applocal.log"
+          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0al5el\\Debug\\cmTC_4943a.exe" "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\bin" "cmTC_4943a.dir\\Debug\\cmTC_4943a.tlog\\cmTC_4943a.write.1u.tlog" "cmTC_4943a.dir\\Debug\\vcpkg.applocal.log"
         FinalizeBuildStatus:
-          Deleting file "cmTC_fa7be.dir\\Debug\\cmTC_fa7be.tlog\\unsuccessfulbuild".
-          Touching "cmTC_fa7be.dir\\Debug\\cmTC_fa7be.tlog\\cmTC_fa7be.lastbuildstate".
-        Done Building Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-me1n1h\\cmTC_fa7be.vcxproj" (default targets).
+          Deleting file "cmTC_4943a.dir\\Debug\\cmTC_4943a.tlog\\unsuccessfulbuild".
+          Touching "cmTC_4943a.dir\\Debug\\cmTC_4943a.tlog\\cmTC_4943a.lastbuildstate".
+        Done Building Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-0al5el\\cmTC_4943a.vcxproj" (default targets).
         
         Build succeeded.
             0 Warning(s)
             0 Error(s)
         
-        Time Elapsed 00:00:01.07
+        Time Elapsed 00:00:00.86
         
       exitCode: 0
   -
@@ -228,8 +228,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-aex0py"
-      binary: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-aex0py"
+      source: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-b3kprz"
+      binary: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-b3kprz"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
@@ -238,46 +238,46 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-aex0py'
+        Change Dir: 'C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-b3kprz'
         
-        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe" cmTC_1de63.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:n
+        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe" cmTC_6c221.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:n
         Microsoft (R) Build Engine version 16.11.6+a918ceb31 for .NET Framework
         Copyright (C) Microsoft Corporation. All rights reserved.
         
-        Build started 13/01/2026 19:33:57.
-        Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-aex0py\\cmTC_1de63.vcxproj" on node 1 (default targets).
+        Build started 13/01/2026 19:36:28.
+        Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b3kprz\\cmTC_6c221.vcxproj" on node 1 (default targets).
         PrepareForBuild:
-          Creating directory "cmTC_1de63.dir\\Debug\\".
-          Creating directory "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-aex0py\\Debug\\".
-          Creating directory "cmTC_1de63.dir\\Debug\\cmTC_1de63.tlog\\".
+          Creating directory "cmTC_6c221.dir\\Debug\\".
+          Creating directory "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b3kprz\\Debug\\".
+          Creating directory "cmTC_6c221.dir\\Debug\\cmTC_6c221.tlog\\".
         InitializeBuildStatus:
-          Creating "cmTC_1de63.dir\\Debug\\cmTC_1de63.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Creating "cmTC_6c221.dir\\Debug\\cmTC_6c221.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
         VcpkgTripletSelection:
           Using triplet "x64-windows" from "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\"
           Using normalized configuration "Release"
         VcpkgCheckManifestRoot:
           The vcpkg manifest was disabled, but we found a manifest file in C:\\Users\\charl\\Documents\\Holy-Z\\. You may want to enable vcpkg manifests in your properties page or pass /p:VcpkgEnableManifest=true to the msbuild invocation.
         ClCompile:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\CL.exe /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_1de63.dir\\Debug\\\\" /Fd"cmTC_1de63.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\CL.exe /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_6c221.dir\\Debug\\\\" /Fd"cmTC_6c221.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
           Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x64
           CMakeCXXCompilerABI.cpp
           Copyright (C) Microsoft Corporation.  All rights reserved.
-          cl /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_1de63.dir\\Debug\\\\" /Fd"cmTC_1de63.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          cl /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /Fo"cmTC_6c221.dir\\Debug\\\\" /Fd"cmTC_6c221.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
         Link:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-aex0py\\Debug\\cmTC_1de63.exe" /INCREMENTAL /ILK:"cmTC_1de63.dir\\Debug\\cmTC_1de63.ilk" /NOLOGO /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib" /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-aex0py/Debug/cmTC_1de63.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-aex0py/Debug/cmTC_1de63.lib" /MACHINE:X64  /machine:x64 cmTC_1de63.dir\\Debug\\CMakeCXXCompilerABI.obj
-          cmTC_1de63.vcxproj -> C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-aex0py\\Debug\\cmTC_1de63.exe
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b3kprz\\Debug\\cmTC_6c221.exe" /INCREMENTAL /ILK:"cmTC_6c221.dir\\Debug\\cmTC_6c221.ilk" /NOLOGO /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib" /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-b3kprz/Debug/cmTC_6c221.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-b3kprz/Debug/cmTC_6c221.lib" /MACHINE:X64  /machine:x64 cmTC_6c221.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_6c221.vcxproj -> C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b3kprz\\Debug\\cmTC_6c221.exe
         AppLocalFromInstalled:
-          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-aex0py\\Debug\\cmTC_1de63.exe" "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\bin" "cmTC_1de63.dir\\Debug\\cmTC_1de63.tlog\\cmTC_1de63.write.1u.tlog" "cmTC_1de63.dir\\Debug\\vcpkg.applocal.log"
+          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b3kprz\\Debug\\cmTC_6c221.exe" "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\bin" "cmTC_6c221.dir\\Debug\\cmTC_6c221.tlog\\cmTC_6c221.write.1u.tlog" "cmTC_6c221.dir\\Debug\\vcpkg.applocal.log"
         FinalizeBuildStatus:
-          Deleting file "cmTC_1de63.dir\\Debug\\cmTC_1de63.tlog\\unsuccessfulbuild".
-          Touching "cmTC_1de63.dir\\Debug\\cmTC_1de63.tlog\\cmTC_1de63.lastbuildstate".
-        Done Building Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-aex0py\\cmTC_1de63.vcxproj" (default targets).
+          Deleting file "cmTC_6c221.dir\\Debug\\cmTC_6c221.tlog\\unsuccessfulbuild".
+          Touching "cmTC_6c221.dir\\Debug\\cmTC_6c221.tlog\\cmTC_6c221.lastbuildstate".
+        Done Building Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b3kprz\\cmTC_6c221.vcxproj" (default targets).
         
         Build succeeded.
             0 Warning(s)
             0 Error(s)
         
-        Time Elapsed 00:00:01.04
+        Time Elapsed 00:00:00.91
         
       exitCode: 0
   -
@@ -308,195 +308,4 @@ events:
       Running the CXX compiler's linker: "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/link.exe" "-v"
       Microsoft (R) Incremental Linker Version 14.29.30159.0
       Copyright (C) Microsoft Corporation.  All rights reserved.
-  -
-    kind: "try_compile-v1"
-    backtrace:
-      - "C:/Program Files/CMake/share/cmake-3.29/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
-      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
-      - "C:/Program Files/CMake/share/cmake-3.29/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
-      - "C:/Program Files/CMake/share/cmake-3.29/Modules/FindThreads.cmake:163 (_threads_check_libc)"
-      - "CMakeFiles/FindSDL2.cmake:62 (find_package)"
-      - "CMakeLists.txt:20 (find_package)"
-    checks:
-      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
-    directories:
-      source: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-7pnc12"
-      binary: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-7pnc12"
-    cmakeVariables:
-      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
-      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
-      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
-      CMAKE_MODULE_PATH: "C:/Users/charl/Documents/Holy-Z/ZSharp/CMakeFiles/"
-    buildResult:
-      variable: "CMAKE_HAVE_LIBC_PTHREAD"
-      cached: true
-      stdout: |
-        Change Dir: 'C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-7pnc12'
-        
-        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe" cmTC_d221a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:n
-        Microsoft (R) Build Engine version 16.11.6+a918ceb31 for .NET Framework
-        Copyright (C) Microsoft Corporation. All rights reserved.
-        
-        Build started 13/01/2026 19:33:58.
-        Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7pnc12\\cmTC_d221a.vcxproj" on node 1 (default targets).
-        PrepareForBuild:
-          Creating directory "cmTC_d221a.dir\\Debug\\".
-          Creating directory "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7pnc12\\Debug\\".
-          Creating directory "cmTC_d221a.dir\\Debug\\cmTC_d221a.tlog\\".
-        InitializeBuildStatus:
-          Creating "cmTC_d221a.dir\\Debug\\cmTC_d221a.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
-        VcpkgTripletSelection:
-          Using triplet "x64-windows" from "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\"
-          Using normalized configuration "Release"
-        VcpkgCheckManifestRoot:
-          The vcpkg manifest was disabled, but we found a manifest file in C:\\Users\\charl\\Documents\\Holy-Z\\. You may want to enable vcpkg manifests in your properties page or pass /p:VcpkgEnableManifest=true to the msbuild invocation.
-        ClCompile:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\CL.exe /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d221a.dir\\Debug\\\\" /Fd"cmTC_d221a.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7pnc12\\src.c"
-          Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x64
-          Copyright (C) Microsoft Corporation.  All rights reserved.
-          src.c
-          cl /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d221a.dir\\Debug\\\\" /Fd"cmTC_d221a.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7pnc12\\src.c"
-        C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7pnc12\\src.c(1,10): fatal error C1083: Cannot open include file: 'pthread.h': No such file or directory [C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7pnc12\\cmTC_d221a.vcxproj]
-        Done Building Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7pnc12\\cmTC_d221a.vcxproj" (default targets) -- FAILED.
-        
-        Build FAILED.
-        
-        "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7pnc12\\cmTC_d221a.vcxproj" (default target) (1) ->
-        (ClCompile target) -> 
-          C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7pnc12\\src.c(1,10): fatal error C1083: Cannot open include file: 'pthread.h': No such file or directory [C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7pnc12\\cmTC_d221a.vcxproj]
-        
-            0 Warning(s)
-            1 Error(s)
-        
-        Time Elapsed 00:00:00.38
-        
-      exitCode: 1
-  -
-    kind: "try_compile-v1"
-    backtrace:
-      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CheckLibraryExists.cmake:69 (try_compile)"
-      - "C:/Program Files/CMake/share/cmake-3.29/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
-      - "C:/Program Files/CMake/share/cmake-3.29/Modules/FindThreads.cmake:175 (_threads_check_lib)"
-      - "CMakeFiles/FindSDL2.cmake:62 (find_package)"
-      - "CMakeLists.txt:20 (find_package)"
-    checks:
-      - "Looking for pthread_create in pthreads"
-    directories:
-      source: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-vk8xtz"
-      binary: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-vk8xtz"
-    cmakeVariables:
-      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
-      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
-      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
-      CMAKE_MODULE_PATH: "C:/Users/charl/Documents/Holy-Z/ZSharp/CMakeFiles/"
-    buildResult:
-      variable: "CMAKE_HAVE_PTHREADS_CREATE"
-      cached: true
-      stdout: |
-        Change Dir: 'C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-vk8xtz'
-        
-        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe" cmTC_b97a9.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:n
-        Microsoft (R) Build Engine version 16.11.6+a918ceb31 for .NET Framework
-        Copyright (C) Microsoft Corporation. All rights reserved.
-        
-        Build started 13/01/2026 19:33:59.
-        Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk8xtz\\cmTC_b97a9.vcxproj" on node 1 (default targets).
-        PrepareForBuild:
-          Creating directory "cmTC_b97a9.dir\\Debug\\".
-          Creating directory "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk8xtz\\Debug\\".
-          Creating directory "cmTC_b97a9.dir\\Debug\\cmTC_b97a9.tlog\\".
-        InitializeBuildStatus:
-          Creating "cmTC_b97a9.dir\\Debug\\cmTC_b97a9.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
-        VcpkgTripletSelection:
-          Using triplet "x64-windows" from "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\"
-          Using normalized configuration "Release"
-        VcpkgCheckManifestRoot:
-          The vcpkg manifest was disabled, but we found a manifest file in C:\\Users\\charl\\Documents\\Holy-Z\\. You may want to enable vcpkg manifests in your properties page or pass /p:VcpkgEnableManifest=true to the msbuild invocation.
-        ClCompile:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\CL.exe /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_b97a9.dir\\Debug\\\\" /Fd"cmTC_b97a9.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk8xtz\\CheckFunctionExists.c"
-          Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x64
-          Copyright (C) Microsoft Corporation.  All rights reserved.
-          CheckFunctionExists.c
-          cl /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_b97a9.dir\\Debug\\\\" /Fd"cmTC_b97a9.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk8xtz\\CheckFunctionExists.c"
-        Link:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk8xtz\\Debug\\cmTC_b97a9.exe" /INCREMENTAL /ILK:"cmTC_b97a9.dir\\Debug\\cmTC_b97a9.ilk" /NOLOGO /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib" /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\manual-link" pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-vk8xtz/Debug/cmTC_b97a9.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-vk8xtz/Debug/cmTC_b97a9.lib" /MACHINE:X64  /machine:x64 cmTC_b97a9.dir\\Debug\\CheckFunctionExists.obj
-        LINK : fatal error LNK1104: cannot open file 'pthreads.lib' [C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk8xtz\\cmTC_b97a9.vcxproj]
-        Done Building Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk8xtz\\cmTC_b97a9.vcxproj" (default targets) -- FAILED.
-        
-        Build FAILED.
-        
-        "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk8xtz\\cmTC_b97a9.vcxproj" (default target) (1) ->
-        (Link target) -> 
-          LINK : fatal error LNK1104: cannot open file 'pthreads.lib' [C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vk8xtz\\cmTC_b97a9.vcxproj]
-        
-            0 Warning(s)
-            1 Error(s)
-        
-        Time Elapsed 00:00:00.45
-        
-      exitCode: 1
-  -
-    kind: "try_compile-v1"
-    backtrace:
-      - "C:/Program Files/CMake/share/cmake-3.29/Modules/CheckLibraryExists.cmake:69 (try_compile)"
-      - "C:/Program Files/CMake/share/cmake-3.29/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
-      - "C:/Program Files/CMake/share/cmake-3.29/Modules/FindThreads.cmake:176 (_threads_check_lib)"
-      - "CMakeFiles/FindSDL2.cmake:62 (find_package)"
-      - "CMakeLists.txt:20 (find_package)"
-    checks:
-      - "Looking for pthread_create in pthread"
-    directories:
-      source: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-nhypla"
-      binary: "C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-nhypla"
-    cmakeVariables:
-      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
-      CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
-      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
-      CMAKE_MODULE_PATH: "C:/Users/charl/Documents/Holy-Z/ZSharp/CMakeFiles/"
-    buildResult:
-      variable: "CMAKE_HAVE_PTHREAD_CREATE"
-      cached: true
-      stdout: |
-        Change Dir: 'C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-nhypla'
-        
-        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/MSBuild/Current/Bin/MSBuild.exe" cmTC_877b8.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=16.0 /v:n
-        Microsoft (R) Build Engine version 16.11.6+a918ceb31 for .NET Framework
-        Copyright (C) Microsoft Corporation. All rights reserved.
-        
-        Build started 13/01/2026 19:34:00.
-        Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nhypla\\cmTC_877b8.vcxproj" on node 1 (default targets).
-        PrepareForBuild:
-          Creating directory "cmTC_877b8.dir\\Debug\\".
-          Creating directory "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nhypla\\Debug\\".
-          Creating directory "cmTC_877b8.dir\\Debug\\cmTC_877b8.tlog\\".
-        InitializeBuildStatus:
-          Creating "cmTC_877b8.dir\\Debug\\cmTC_877b8.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
-        VcpkgTripletSelection:
-          Using triplet "x64-windows" from "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\"
-          Using normalized configuration "Release"
-        VcpkgCheckManifestRoot:
-          The vcpkg manifest was disabled, but we found a manifest file in C:\\Users\\charl\\Documents\\Holy-Z\\. You may want to enable vcpkg manifests in your properties page or pass /p:VcpkgEnableManifest=true to the msbuild invocation.
-        ClCompile:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\CL.exe /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_877b8.dir\\Debug\\\\" /Fd"cmTC_877b8.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nhypla\\CheckFunctionExists.c"
-          Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x64
-          CheckFunctionExists.c
-          Copyright (C) Microsoft Corporation.  All rights reserved.
-          cl /c /I"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_877b8.dir\\Debug\\\\" /Fd"cmTC_877b8.dir\\Debug\\vc142.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nhypla\\CheckFunctionExists.c"
-        Link:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nhypla\\Debug\\cmTC_877b8.exe" /INCREMENTAL /ILK:"cmTC_877b8.dir\\Debug\\cmTC_877b8.ilk" /NOLOGO /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib" /LIBPATH:"C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\manual-link" pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "C:\\Users\\charl\\Documents\\Bliss-Browser\\vcpkg\\installed\\x64-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-nhypla/Debug/cmTC_877b8.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/charl/Documents/Holy-Z/ZSharp/build/CMakeFiles/CMakeScratch/TryCompile-nhypla/Debug/cmTC_877b8.lib" /MACHINE:X64  /machine:x64 cmTC_877b8.dir\\Debug\\CheckFunctionExists.obj
-        LINK : fatal error LNK1104: cannot open file 'pthread.lib' [C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nhypla\\cmTC_877b8.vcxproj]
-        Done Building Project "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nhypla\\cmTC_877b8.vcxproj" (default targets) -- FAILED.
-        
-        Build FAILED.
-        
-        "C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nhypla\\cmTC_877b8.vcxproj" (default target) (1) ->
-        (Link target) -> 
-          LINK : fatal error LNK1104: cannot open file 'pthread.lib' [C:\\Users\\charl\\Documents\\Holy-Z\\ZSharp\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nhypla\\cmTC_877b8.vcxproj]
-        
-            0 Warning(s)
-            1 Error(s)
-        
-        Time Elapsed 00:00:00.45
-        
-      exitCode: 1
 ...
