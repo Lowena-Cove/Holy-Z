@@ -37,9 +37,6 @@ jobs:
         sudo apt-get install -y \
           cmake \
           build-essential \
-          libsdl2-dev \
-          libsdl2-image-dev \
-          libsdl2-ttf-dev \
           libboost-system-dev \
           libboost-filesystem-dev
 
@@ -47,7 +44,7 @@ jobs:
       if: matrix.platform == 'windows'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: '3426db05b996481ca31e95fff3734cf23e0f51bc'
+        vcpkgGitCommitId: '01f602195983451bc83e72f4214af2cbc495aa94'
 
     - name: Install dependencies (Windows)
       if: matrix.platform == 'windows'
@@ -75,7 +72,7 @@ jobs:
       run: |
         mkdir -p build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE=Release
+        cmake .. -DCMAKE_BUILD_TYPE=Release -DHOLYZ_ENABLE_GRAPHICS=OFF
 
     - name: Configure CMake (Windows)
       if: matrix.platform == 'windows'
@@ -83,7 +80,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows
+        cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows -DHOLYZ_ENABLE_GRAPHICS=OFF
 
     - name: Build project
       working-directory: HolyZ/build
