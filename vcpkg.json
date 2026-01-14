@@ -3,12 +3,22 @@
   "version": "1.0.0",
   "description": "Holy-Z programming language interpreter",
   "default-features": [],
-  "builtin-baseline": "a42af01b72c28a8e1d7b48107b33e4f286a55ef6",
-  "vcpkg-configuration": {},
+  "builtin-baseline": "3426db05b996481ca31e95fff3734cf23e0f51bc",
+  "vcpkg-configuration": {
+    "default-registry": {
+      "kind": "git",
+      "baseline": "3426db05b996481ca31e95fff3734cf23e0f51bc",
+      "repository": "https://github.com/Microsoft/vcpkg.git"
+    }
+  },
   "overrides": [
     {
       "name": "boost-system",
       "version": "1.83.0"
+    },
+    {
+      "name": "sdl2",
+      "version": "2.28.4"
     }
   ],
   "dependencies": [
