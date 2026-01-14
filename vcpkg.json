@@ -2,7 +2,7 @@
   "name": "holy-z",
   "version": "1.0.0",
   "description": "Holy-Z programming language interpreter",
-  "builtin-baseline": "3426db05b996481ca31e95fff3734cf23e0f51bc",
+  "builtin-baseline": "8c8f4ff0e2e6ac1fce52f77a2c0c0bb4a5d55bf3",
   "dependencies": [
     "boost-system",
     "boost-filesystem"

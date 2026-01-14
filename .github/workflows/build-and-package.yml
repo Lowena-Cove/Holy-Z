@@ -44,7 +44,7 @@ jobs:
       if: matrix.platform == 'windows'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: '01f602195983451bc83e72f4214af2cbc495aa94'
+        vcpkgGitCommitId: '8c8f4ff0e2e6ac1fce52f77a2c0c0bb4a5d55bf3'
 
     - name: Install dependencies (Windows)
       if: matrix.platform == 'windows'
@@ -66,6 +66,11 @@ jobs:
           }
         } while ($retryCount -lt $maxRetries)
 
+    - name: Clean CMake cache (Linux)
+      if: matrix.platform == 'linux'
+      working-directory: HolyZ
+      run: rm -rf build
+
     - name: Configure CMake (Linux)
       if: matrix.platform == 'linux'
       working-directory: HolyZ
@@ -73,6 +78,12 @@ jobs:
         mkdir -p build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Release -DHOLYZ_ENABLE_GRAPHICS=OFF
+
+    - name: Clean CMake cache (Windows)
+      if: matrix.platform == 'windows'
+      shell: pwsh
+      working-directory: HolyZ
+      run: Remove-Item -Path build -Recurse -Force -ErrorAction SilentlyContinue
 
     - name: Configure CMake (Windows)
       if: matrix.platform == 'windows'
