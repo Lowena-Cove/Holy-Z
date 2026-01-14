@@ -12,9 +12,6 @@
     }
   ],
   "dependencies": [
-    "sdl2",
-    "sdl2-image",
-    "sdl2-ttf",
     {
       "name": "boost-system",
       "version>=": "1.70.0"
