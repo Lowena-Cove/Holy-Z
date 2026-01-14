@@ -47,16 +47,31 @@ jobs:
       if: matrix.platform == 'windows'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: 'a42af01b72c28a8e1d7b48107b33e4f286a55ef6'
+        vcpkgGitCommitId: '3426db05b996481ca31e95fff3734cf23e0f51bc'
 
     - name: Install dependencies (Windows)
       if: matrix.platform == 'windows'
+      shell: pwsh
       run: |
-        vcpkg install --triplet x64-windows
+        # Retry vcpkg install up to 3 times to handle network issues
+        $maxRetries = 3
+        $retryCount = 0
+        do {
+          $retryCount++
+          Write-Host "Attempt $retryCount of $maxRetries"
+          try {
+            vcpkg install --triplet x64-windows --debug
+            break
+          } catch {
+            if ($retryCount -eq $maxRetries) { throw }
+            Write-Host "Retry in 30 seconds..."
+            Start-Sleep -Seconds 30
+          }
+        } while ($retryCount -lt $maxRetries)
 
     - name: Configure CMake (Linux)
       if: matrix.platform == 'linux'
-      working-directory: ZSharp
+      working-directory: HolyZ
       run: |
         mkdir -p build
         cd build
@@ -64,14 +79,14 @@ jobs:
 
     - name: Configure CMake (Windows)
       if: matrix.platform == 'windows'
-      working-directory: ZSharp
+      working-directory: HolyZ
       run: |
         mkdir build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows
 
     - name: Build project
-      working-directory: ZSharp/build
+      working-directory: HolyZ/build
       run: cmake --build . --config Release
 
     - name: Create package directory
@@ -81,7 +96,7 @@ jobs:
       if: matrix.platform == 'linux'
       run: |
         cp ZSharp/build/${{ matrix.executable }} package/
-        cp -r examples package/
+        cp HolyZ/build/${{ matrix.executable }} package/
         cp README.md package/
         cp LICENSE package/
         
@@ -90,7 +105,7 @@ jobs:
       shell: pwsh
       run: |
         Copy-Item "ZSharp/build/Release/${{ matrix.executable }}" "package/"
-        Copy-Item "examples" "package/" -Recurse
+        Copy-Item "HolyZ/build/Release/${{ matrix.executable }}" "package/"
         Copy-Item "README.md" "package/"
         Copy-Item "LICENSE" "package/"
         
