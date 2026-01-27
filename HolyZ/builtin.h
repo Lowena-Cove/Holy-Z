@@ -173,6 +173,118 @@ ClassInstance AnyAsClassInstance(const boost::any& val)
 	}
 }
 
+int any_type(const boost::any& val)
+{
+	try // Try converting to int
+	{
+		int i = any_cast<int>(val);
+		return 0;
+	}
+	catch (boost::bad_any_cast)
+	{
+		try // Try converting to float
+		{
+			float f = any_cast<float>(val);
+			return 1;
+		}
+		catch (boost::bad_any_cast)
+		{
+			try // Try converting to bool
+			{
+				bool b = any_cast<bool>(val);
+				return 2;
+			}
+			catch (boost::bad_any_cast) // Try converting to string
+			{
+				try
+				{
+					string s = any_cast<string>(val);
+					return 3;
+				}
+				catch (boost::bad_any_cast) // Try converting to sprite
+				{
+#ifdef HOLYZ_GRAPHICS_ENABLED
+					try
+					{
+						Sprite s = any_cast<Sprite>(val);
+						return 4;
+					}
+					catch (boost::bad_any_cast) // Try converting to Vec2
+					{
+						try
+						{
+							Vec2 v = any_cast<Vec2>(val);
+							return 5;
+						}
+						catch (boost::bad_any_cast) // Try converting to Text
+						{
+							try
+							{
+								Text t = any_cast<Text>(val);
+								return 6;
+							}
+							catch (boost::bad_any_cast) // Try Class Instance
+							{
+								try
+								{
+									ClassInstance ci = any_cast<ClassInstance>(val);
+									return 7;
+								}
+								catch (boost::bad_any_cast) // Does not convert, return
+								{
+									return -1; // Unknown type
+								}
+							}
+						}
+					}
+#else
+					// Graphics disabled, try ClassInstance directly
+					try
+					{
+						ClassInstance ci = any_cast<ClassInstance>(val);
+						return 7;
+					}
+					catch (boost::bad_any_cast) // Does not convert, return
+					{
+						return -1; // Unknown type
+					}
+#endif
+				}
+			}
+		}
+	}
+}
+
+string any_type_name(const boost::any& val)
+{
+	int typeNum = any_type(val);
+	switch (typeNum) {
+		case 0: return "int";
+		case 1: return "float";
+		case 2: return "bool";
+		case 3: return "string";
+#ifdef HOLYZ_GRAPHICS_ENABLED
+		case 4: return "Sprite";
+		case 5: return "Vec2";
+		case 6: return "Text";
+#endif
+		case 7: return "object";
+		case 8: 
+			try {
+				any_cast<ResultValue>(val);
+				return "Result";
+			} catch (...) {}
+			break;
+		case 9:
+			try {
+				any_cast<OptionValue>(val);
+				return "Option";
+			} catch (...) {}
+			break;
+		default: return "null";
+	}
+	return "null";
+}
 
 //unordered_map<string, vector<vector<string>>> builtinFunctionValues;
 //unordered_map<string, boost::any> builtinVarVals;
