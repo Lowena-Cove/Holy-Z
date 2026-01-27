@@ -45,7 +45,7 @@ jobs:
       uses: lukka/run-vcpkg@v11
       with:
         vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-        vcpkgGitCommitId: '2024.01.12'
+        vcpkgGitCommitId: 'c8696863d371ab7f46e213d8f5ca923c4aef2a00'
 
     - name: Install dependencies (Windows)
       if: matrix.platform == 'windows'
@@ -104,7 +104,6 @@ jobs:
     - name: Package files (Linux)
       if: matrix.platform == 'linux'
       run: |
-        cp ZSharp/build/${{ matrix.executable }} package/
         cp HolyZ/build/${{ matrix.executable }} package/
         cp README.md package/
         cp LICENSE package/
@@ -113,7 +112,6 @@ jobs:
       if: matrix.platform == 'windows'
       shell: pwsh
       run: |
-        Copy-Item "ZSharp/build/Release/${{ matrix.executable }}" "package/"
         Copy-Item "HolyZ/build/Release/${{ matrix.executable }}" "package/"
         Copy-Item "README.md" "package/"
         Copy-Item "LICENSE" "package/"

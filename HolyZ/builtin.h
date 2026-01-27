@@ -160,7 +160,7 @@ unordered_map<string, ClassDefinition> globalClassDefinitions;
 // Implementation of AnyAsClassInstance (defined after ClassInstance is complete)
 ClassInstance AnyAsClassInstance(const boost::any& val)
 {
-	if (val.empty())
+	if (any_null(val))
 		return ClassInstance();
 	try // Try converting to ClassInstance
 	{
