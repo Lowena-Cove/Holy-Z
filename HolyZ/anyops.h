@@ -2,8 +2,19 @@
 #ifndef ANYOPS_H
 #define ANYOPS_H
 
-#include "builtin.h"
 #include <boost/any.hpp>
+#include <string>
+#include <vector>
+
+// Forward declarations
+class ClassInstance;
+class ResultValue;
+class OptionValue;
+#ifdef HOLYZ_GRAPHICS_ENABLED
+class Vec2;
+class Sprite;
+class Text;
+#endif
 
 using namespace boost;
 using namespace std;
@@ -204,20 +215,7 @@ Vec2 AnyAsVec2(const boost::any& val)
 #endif // HOLYZ_GRAPHICS_ENABLED
 
 // Will get type 'any' val to a ClassInstance
-ClassInstance AnyAsClassInstance(const boost::any& val)
-{
-	if (any_null(val))
-		return ClassInstance();
-	try // Try converting to ClassInstance
-	{
-		return any_cast<ClassInstance>(val);
-	}
-	catch (boost::bad_any_cast)
-	{
-		LogWarning("invalid conversion to type 'ClassInstance'");
-		return ClassInstance();
-	}
-}
+ClassInstance AnyAsClassInstance(const boost::any& val);
 
 // Gets type of 'any' val
 // 0 -> int;  1 -> float;  2 -> bool;  3 -> string;  4 -> Sprite; 5 -> Vec2; 6 -> Text; 7 -> ClassInstance;

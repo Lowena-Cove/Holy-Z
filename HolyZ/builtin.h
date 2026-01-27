@@ -77,6 +77,8 @@ public:
 	ClassMethod() : isStatic(false) {}
 	ClassMethod(const string& n, const vector<string>& params, bool stat = false)
 		: name(n), parameters(params), isStatic(stat) {}
+	ClassMethod(const string& n, const vector<string>& params, const vector<vector<string>>& b, bool stat = false)
+		: name(n), parameters(params), body(b), isStatic(stat) {}
 };
 
 class ClassDefinition {
@@ -154,6 +156,22 @@ extern MemoryHeap globalMemoryHeap;
 
 // Global class definitions
 unordered_map<string, ClassDefinition> globalClassDefinitions;
+
+// Implementation of AnyAsClassInstance (defined after ClassInstance is complete)
+ClassInstance AnyAsClassInstance(const boost::any& val)
+{
+	if (val.empty())
+		return ClassInstance();
+	try // Try converting to ClassInstance
+	{
+		return any_cast<ClassInstance>(val);
+	}
+	catch (boost::bad_any_cast)
+	{
+		LogWarning("invalid conversion to type 'ClassInstance'");
+		return ClassInstance();
+	}
+}
 
 
 //unordered_map<string, vector<vector<string>>> builtinFunctionValues;
