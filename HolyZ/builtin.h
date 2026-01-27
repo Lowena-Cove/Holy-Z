@@ -39,7 +39,11 @@
 using namespace std;
 using namespace boost;
 
+#ifdef HOLYZ_GRAPHICS_ENABLED
 vector<string> types = { "int", "float", "string", "bool", "void", "null", "Sprite", "Vec2", "Text", "Result", "Option" };
+#else
+vector<string> types = { "int", "float", "string", "bool", "void", "null", "Result", "Option" };
+#endif
 // Forward declarations for Holy C classes
 class ClassDefinition;
 class ClassInstance;
@@ -435,6 +439,7 @@ int LogCriticalError(const string& errorText)
 	return 2;
 }
 
+#ifdef HOLYZ_GRAPHICS_ENABLED
 boost::any GetClassSubComponent(boost::any value, string subComponentName)
 {
 	// If a Sprite Class
@@ -454,7 +459,14 @@ boost::any GetClassSubComponent(boost::any value, string subComponentName)
 	}
 	return nullType;
 }
+#else
+boost::any GetClassSubComponent(boost::any value, string subComponentName)
+{
+	return nullType;
+}
+#endif // HOLYZ_GRAPHICS_ENABLED
 
+#ifdef HOLYZ_GRAPHICS_ENABLED
 boost::any EditClassSubComponent(boost::any value, string oper, boost::any otherVal, string subComponentName)
 {
 	// If a Sprite Class
@@ -500,6 +512,12 @@ bool AxisAlignedCollision(const Sprite& a, const Sprite& b) // AABB - AABB colli
 	// collision only if on both axes
 	return collisionX && collisionY;
 }
+#else
+boost::any EditClassSubComponent(boost::any value, string oper, boost::any otherVal, string subComponentName)
+{
+	return nullType;
+}
+#endif // HOLYZ_GRAPHICS_ENABLED
 
 //// Initial script processing, which loads variables and functions from builtin
 //int GetBuiltins(std::string s)
@@ -601,6 +619,7 @@ boost::any ZSFunction(const string& name, const vector<boost::any>& args)
 		return lerp(AnyAsFloat(args.at(0)), AnyAsFloat(args.at(1)), AnyAsFloat(args.at(2)));
 	else if (name == "ZS.Math.Abs")
 		return abs(AnyAsFloat(args.at(0)));
+#ifdef HOLYZ_GRAPHICS_ENABLED
 	else if (name == "ZS.Graphics.Init")
 	{
 #if DEVELOPER_MESSAGES == true
@@ -662,6 +681,7 @@ boost::any ZSFunction(const string& name, const vector<boost::any>& args)
 	}
 	else if (name == "ZS.Input.GetKey")
 		return KEYS[StringRaw(any_cast<string>(args.at(0)))] == 1;
+#endif // HOLYZ_GRAPHICS_ENABLED
 	else if (name == "ZS.System.Print")
 		cout << StringRaw(AnyAsString(args.at(0)));
 	else if (name == "ZS.System.PrintLine")

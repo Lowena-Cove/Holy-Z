@@ -2,6 +2,8 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#ifdef HOLYZ_GRAPHICS_ENABLED
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -1072,5 +1074,7 @@ int initGraphics(std::string windowTitle, int width, int height, int pixelScale)
 
 	return 0;
 }
+
+#endif // HOLYZ_GRAPHICS_ENABLED
 
 #endif
