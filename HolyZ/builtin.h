@@ -255,37 +255,6 @@ int any_type(const boost::any& val)
 	}
 }
 
-string any_type_name(const boost::any& val)
-{
-	int typeNum = any_type(val);
-	switch (typeNum) {
-		case 0: return "int";
-		case 1: return "float";
-		case 2: return "bool";
-		case 3: return "string";
-#ifdef HOLYZ_GRAPHICS_ENABLED
-		case 4: return "Sprite";
-		case 5: return "Vec2";
-		case 6: return "Text";
-#endif
-		case 7: return "object";
-		case 8: 
-			try {
-				any_cast<ResultValue>(val);
-				return "Result";
-			} catch (...) {}
-			break;
-		case 9:
-			try {
-				any_cast<OptionValue>(val);
-				return "Option";
-			} catch (...) {}
-			break;
-		default: return "null";
-	}
-	return "null";
-}
-
 //unordered_map<string, vector<vector<string>>> builtinFunctionValues;
 //unordered_map<string, boost::any> builtinVarVals;
 
@@ -377,6 +346,37 @@ public:
 		return "None";
 	}
 };
+
+string any_type_name(const boost::any& val)
+{
+	int typeNum = any_type(val);
+	switch (typeNum) {
+		case 0: return "int";
+		case 1: return "float";
+		case 2: return "bool";
+		case 3: return "string";
+#ifdef HOLYZ_GRAPHICS_ENABLED
+		case 4: return "Sprite";
+		case 5: return "Vec2";
+		case 6: return "Text";
+#endif
+		case 7: return "object";
+		case 8: 
+			try {
+				any_cast<ResultValue>(val);
+				return "Result";
+			} catch (...) {}
+			break;
+		case 9:
+			try {
+				any_cast<OptionValue>(val);
+				return "Option";
+			} catch (...) {}
+			break;
+		default: return "null";
+	}
+	return "null";
+}
 
 // Trait support - improved trait system
 class TraitDefinition {
