@@ -1778,7 +1778,6 @@ boost::any ExecuteFunction(const string& functionName, const vector<boost::any>&
 	return nullType;
 }
 
-int parseHolyZ(string script)
 // REPL (Read-Eval-Print Loop) for shell mode
 void RunREPL()
 {
@@ -1842,6 +1841,7 @@ void RunREPL()
 	}
 }
 
+int parseHolyZ(string script)
 {
 	//script = replace(script, "    ", "\t"); // Replace spaces with tabs (not really required, and will break purposefull whitespace in strings etc.)
 

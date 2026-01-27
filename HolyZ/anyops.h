@@ -171,6 +171,7 @@ int AnyAsInt(const boost::any& val)
 	}
 }
 
+#ifdef HOLYZ_GRAPHICS_ENABLED
 // Will get type 'any' val to a Vec2
 Vec2 AnyAsVec2(const boost::any& val)
 {
@@ -200,6 +201,7 @@ Vec2 AnyAsVec2(const boost::any& val)
 		}
 	}
 }
+#endif // HOLYZ_GRAPHICS_ENABLED
 
 // Will get type 'any' val to a ClassInstance
 ClassInstance AnyAsClassInstance(const boost::any& val)
@@ -249,6 +251,7 @@ int any_type(const boost::any& val)
 				}
 				catch (boost::bad_any_cast) // Try converting to sprite
 				{
+#ifdef HOLYZ_GRAPHICS_ENABLED
 					try
 					{
 						Sprite s = any_cast<Sprite>(val);
@@ -268,7 +271,8 @@ int any_type(const boost::any& val)
 								Text t = any_cast<Text>(val);
 								return 6;
 							}
-							catch (boost::bad_any_cast) // Does not convert, return
+							catch (boost::bad_any_cast) // Try Class Instance
+							{
 								try
 								{
 									ClassInstance ci = any_cast<ClassInstance>(val);
@@ -276,7 +280,28 @@ int any_type(const boost::any& val)
 								}
 								catch (boost::bad_any_cast) // Does not convert, return
 								{
+									return -1; // Unknown type
+								}
+							}
+						}
+					}
+#else
+					// Graphics disabled, try ClassInstance directly
+					try
+					{
+						ClassInstance ci = any_cast<ClassInstance>(val);
+						return 7;
+					}
+					catch (boost::bad_any_cast) // Does not convert, return
+					{
+						return -1; // Unknown type
+					}
 #endif
+				}
+			}
+		}
+	}
+}
 
 // Gets type of 'any' val as string for runtime type checking
 string any_type_name(const boost::any& val)
@@ -287,9 +312,11 @@ string any_type_name(const boost::any& val)
 		case 1: return "float";
 		case 2: return "bool";
 		case 3: return "string";
+#ifdef HOLYZ_GRAPHICS_ENABLED
 		case 4: return "Sprite";
 		case 5: return "Vec2";
 		case 6: return "Text";
+#endif
 		case 7: return "object";
 		case 8: 
 			try {
@@ -307,3 +334,5 @@ string any_type_name(const boost::any& val)
 	}
 	return "null";
 }
+
+#endif

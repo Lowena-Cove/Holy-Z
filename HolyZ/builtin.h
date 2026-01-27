@@ -49,6 +49,8 @@ class ClassDefinition;
 class ClassInstance;
 class ClassMethod;
 class ClassAttribute;
+class ResultValue;
+class OptionValue;
 
 // Global class definitions map
 extern unordered_map<string, ClassDefinition> globalClassDefinitions;
@@ -681,16 +683,16 @@ boost::any ZSFunction(const string& name, const vector<boost::any>& args)
 	}
 	else if (name == "ZS.Input.GetKey")
 		return KEYS[StringRaw(any_cast<string>(args.at(0)))] == 1;
-#endif // HOLYZ_GRAPHICS_ENABLED
-	else if (name == "ZS.System.Print")
-		cout << StringRaw(AnyAsString(args.at(0)));
-	else if (name == "ZS.System.PrintLine")
-		cout << StringRaw(AnyAsString(args.at(0))) << endl;
 	else if (name == "ZS.System.Vec2")
 	{
 		Vec2 v(AnyAsFloat(args.at(0)), AnyAsFloat(args.at(1)));
 		return v;
 	}
+#endif // HOLYZ_GRAPHICS_ENABLED
+	else if (name == "ZS.System.Print")
+		cout << StringRaw(AnyAsString(args.at(0)));
+	else if (name == "ZS.System.PrintLine")
+		cout << StringRaw(AnyAsString(args.at(0))) << endl;
 	else if (name == "ZS.System.Command"){
 		string command = StringRaw(AnyAsString(args.at(0)));
 		//int command_len = command.length();
