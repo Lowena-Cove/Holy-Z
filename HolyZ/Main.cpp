@@ -212,13 +212,11 @@ bool IsHolyCFunction(const string& funcName)
 
 // Forward declarations
 boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::any>& args);
+boost::any ProcessLine(const vector<vector<string>>& words, int& lineNum, unordered_map<string, boost::any>& variableValues);
 void RunREPL();
 
 boost::any EvalExpression(const string& ex, unordered_map<string, boost::any>& variableValues)
 {
-	string expression = trim(ex);
-	bool inQuotes = false;
-
 	string expression = trim(ex);
 	bool inQuotes = false;
 
@@ -421,6 +419,7 @@ int varOperation(const vector<string>& str, unordered_map<string, boost::any>& v
 			else
 				LogWarning("unrecognized operator \'" + str.at(1) + "\'");
 		}
+#ifdef HOLYZ_GRAPHICS_ENABLED
 		// Else it is a Vec2. No other complex class can be operated on it's base form (ex. you can't do: Sprite += Sprite)
 		else if (any_type(variableValues[str.at(0)]) == 5)
 		{
@@ -438,6 +437,7 @@ int varOperation(const vector<string>& str, unordered_map<string, boost::any>& v
 			else
 				LogWarning("unrecognized operator \'" + str.at(1) + "\'");
 		}
+#endif
 		return 0;
 	}
 	else if (IsVar(str.at(0), globalVariableValues))
@@ -458,6 +458,7 @@ int varOperation(const vector<string>& str, unordered_map<string, boost::any>& v
 			else
 				LogWarning("unrecognized operator \'" + str.at(1) + "\'");
 		}
+#ifdef HOLYZ_GRAPHICS_ENABLED
 		// Else it is a Vec2. No other complex class can be operated on it's base form (ex. you can't do: Sprite += Sprite)
 		else if (any_type(globalVariableValues[str.at(0)]) == 5)
 		{
@@ -475,6 +476,7 @@ int varOperation(const vector<string>& str, unordered_map<string, boost::any>& v
 			else
 				LogWarning("unrecognized operator \'" + str.at(1) + "\'");
 		}
+#endif
 		return 0;
 	}
 	LogWarning("uninitialized variable or typo in \'" + str.at(0) + "\'");
@@ -694,7 +696,7 @@ boost::any ExecuteHolyCFunction(const string& functionName, const vector<boost::
 	{
 		// Create an error Result: Err(error_message, error_type)
 		if (args.empty())
-			return ResultValue("Unknown error");
+			return ResultValue(string("Unknown error"), string("Error"));
 		string errorMsg = AnyAsString(args.at(0));
 		string errorType = (args.size() > 1) ? AnyAsString(args.at(1)) : "Error";
 		return ResultValue(errorMsg, errorType);
@@ -1432,3 +1434,32 @@ int parseHolyZ(string script)
 	return 0;
 }
 // Holy C type conversion functions
+
+int main(int argc, char* argv[])
+{
+if (argc > 1)
+{
+// Run script from file
+string scriptPath = argv[1];
+ifstream scriptFile(scriptPath);
+if (!scriptFile.is_open())
+{
+cerr << "Error: Could not open file '" << scriptPath << "'" << endl;
+return 1;
+}
+
+stringstream scriptBuffer;
+scriptBuffer << scriptFile.rdbuf();
+string scriptContents = scriptBuffer.str();
+scriptFile.close();
+
+parseHolyZ(scriptContents);
+}
+else
+{
+// Run REPL
+RunREPL();
+}
+
+return 0;
+}

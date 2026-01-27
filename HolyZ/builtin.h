@@ -173,6 +173,37 @@ ClassInstance AnyAsClassInstance(const boost::any& val)
 	}
 }
 
+// Compare two boost::any values for equality
+bool any_compare(const boost::any& a, const boost::any& b)
+{
+	// Handle null/empty cases
+	if (a.empty() && b.empty()) return true;
+	if (a.empty() || b.empty()) return false;
+	
+	// Try int comparison
+	try {
+		return any_cast<int>(a) == any_cast<int>(b);
+	} catch (boost::bad_any_cast) {}
+	
+	// Try float comparison
+	try {
+		return any_cast<float>(a) == any_cast<float>(b);
+	} catch (boost::bad_any_cast) {}
+	
+	// Try bool comparison
+	try {
+		return any_cast<bool>(a) == any_cast<bool>(b);
+	} catch (boost::bad_any_cast) {}
+	
+	// Try string comparison
+	try {
+		return any_cast<string>(a) == any_cast<string>(b);
+	} catch (boost::bad_any_cast) {}
+	
+	// Default: not equal if types don't match
+	return false;
+}
+
 int any_type(const boost::any& val)
 {
 	try // Try converting to int

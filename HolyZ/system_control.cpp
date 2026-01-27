@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <cstring>
+#include <algorithm>
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <windows.h>

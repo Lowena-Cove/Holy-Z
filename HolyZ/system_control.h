@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <fstream>
 #include <cstdlib>
+#include <chrono>
 
 using namespace std;
 
@@ -175,8 +176,6 @@ namespace Performance {
 // ============================================================
 // Inline Implementations
 // ============================================================
-
-#include <chrono>
 
 inline Performance::Timer::Timer() {
     start = chrono::high_resolution_clock::now();

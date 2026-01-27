@@ -45,7 +45,7 @@ jobs:
       uses: lukka/run-vcpkg@v11
       with:
         vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-        vcpkgGitCommitId: '8c8f4ff0e2e6ac1fce52f77a2c0c0bb4a5d55bf3'
+        vcpkgGitCommitId: '2024.01.12'
 
     - name: Install dependencies (Windows)
       if: matrix.platform == 'windows'

@@ -271,6 +271,23 @@ bool startsWith(const string& str, const string& lookFor)
 	return true;
 }
 
+bool endsWith(const string& str, const string& lookFor)
+{
+	if (str.empty() || lookFor.size() > str.size())
+		return false;
+
+	int strLen = str.size();
+	int lookForLen = lookFor.size();
+	
+	for (int i = 0; i < lookForLen; i++)
+	{
+		if (str[strLen - lookForLen + i] != lookFor[i])
+			return false;
+	}
+
+	return true;
+}
+
 int countOutsideParenthesis(const string& str, const char& searchFor)
 {
 	int cnt = 0;

@@ -21,6 +21,7 @@ using namespace std;
 
 int LogWarning(const string& warningText);
 int any_type(const boost::any& val);
+bool any_compare(const boost::any& a, const boost::any& b);
 
 // Gets if any is NullType
 bool any_null(const boost::any& val)
