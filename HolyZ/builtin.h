@@ -17,14 +17,18 @@
 #include <algorithm>
 #include <unordered_map>
 #include <boost/any.hpp>
+#ifdef HOLYZ_GRAPHICS_ENABLED
 #include <SDL.h>
+#endif
 #include <ctime>
 #include <math.h>
 #include <sys/stat.h>
 #include <cstdlib> // for console command printing
 
 #include "strops.h"
+#ifdef HOLYZ_GRAPHICS_ENABLED
 #include "graphics.h"
+#endif
 #include "anyops.h"
 #if WINDOWS
 #include "color.hpp"

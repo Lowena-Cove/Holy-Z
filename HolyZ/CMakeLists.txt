@@ -109,6 +109,8 @@ endif()
 option(HOLYZ_ENABLE_GRAPHICS "Enable SDL2-based graphics support" OFF)
 
 if(HOLYZ_ENABLE_GRAPHICS)
+    # Define preprocessor macro to enable graphics code
+    target_compile_definitions(HolyZ PRIVATE HOLYZ_GRAPHICS_ENABLED)
     # Try to find SDL2 using vcpkg first (modern CMake targets)
     find_package(SDL2 CONFIG QUIET)
     if(SDL2_FOUND)
