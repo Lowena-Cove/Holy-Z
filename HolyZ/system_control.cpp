@@ -7,6 +7,8 @@
 #include <algorithm>
 
 #if defined(_WIN32) || defined(_WIN64)
+    // Prevent std::byte conflict with Windows headers in C++17
+    #define _HAS_STD_BYTE 0
     #include <windows.h>
     #include <psapi.h>
     #include <winreg.h>
