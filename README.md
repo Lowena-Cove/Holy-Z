@@ -1,6 +1,17 @@
 
 ## Introduction
-Holy Z is a custom programming language forked from Z-Sharp and optimized like Holy C. Holy Z's interpreter is written in C++ and supports both traditional Z-Sharp syntax and Holy C-inspired features. Holy Z scripts have the file extension .ZS. The base syntax is similar to C# or Python, but includes Holy C extensions for more flexible programming. It also has support for graphics using SDL2.
+Holy Z is a custom programming language forked from Z-Sharp and optimized like Holy C. Holy Z's interpreter is written in C++ and supports both traditional Z-Sharp syntax and Holy C-inspired features, with additions from Rust, Zen-C, and modern C++. Holy Z scripts have the file extension .ZS. The base syntax is similar to C# or Python, but includes extensions for more flexible programming. It also has support for graphics using SDL2.
+
+## Language Features
+
+Holy-Z now includes features from multiple modern and classic systems programming languages:
+
+- **Holy C-style types**: U8, I8, U16, I16, U32, I32, U64, I64, F64, U0 (from TempleOS)
+- **Rust-inspired safety**: Result<T> and Option<T> types for error handling
+- **C++ features**: Classes, inheritance, and methods
+- **Modern syntax**: REPL mode, type inference, and expressive control flow
+
+See [LANGUAGE_FEATURES.md](LANGUAGE_FEATURES.md) for detailed documentation on all language features.
 
 Before using Holy Z:
 There is ***no documentation***, ***strings*** barely work, ***performance*** isn't great, the syntax is ***very specific***, and most errors just cause it to ***crash without warning***. I am just a *single developer* working on this during my free time; between school, other projects, and YouTube. Holy Z will most likely never be finished, since it was really supposed to end when the video was published about it.

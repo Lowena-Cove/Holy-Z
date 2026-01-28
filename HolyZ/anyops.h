@@ -2,14 +2,26 @@
 #ifndef ANYOPS_H
 #define ANYOPS_H
 
-#include "builtin.h"
 #include <boost/any.hpp>
+#include <string>
+#include <vector>
+
+// Forward declarations
+class ClassInstance;
+class ResultValue;
+class OptionValue;
+#ifdef HOLYZ_GRAPHICS_ENABLED
+class Vec2;
+class Sprite;
+class Text;
+#endif
 
 using namespace boost;
 using namespace std;
 
 int LogWarning(const string& warningText);
 int any_type(const boost::any& val);
+bool any_compare(const boost::any& a, const boost::any& b);
 
 // Gets if any is NullType
 bool any_null(const boost::any& val)
@@ -171,6 +183,7 @@ int AnyAsInt(const boost::any& val)
 	}
 }
 
+#ifdef HOLYZ_GRAPHICS_ENABLED
 // Will get type 'any' val to a Vec2
 Vec2 AnyAsVec2(const boost::any& val)
 {
@@ -200,110 +213,16 @@ Vec2 AnyAsVec2(const boost::any& val)
 		}
 	}
 }
+#endif // HOLYZ_GRAPHICS_ENABLED
 
 // Will get type 'any' val to a ClassInstance
-ClassInstance AnyAsClassInstance(const boost::any& val)
-{
-	if (any_null(val))
-		return ClassInstance();
-	try // Try converting to ClassInstance
-	{
-		return any_cast<ClassInstance>(val);
-	}
-	catch (boost::bad_any_cast)
-	{
-		LogWarning("invalid conversion to type 'ClassInstance'");
-		return ClassInstance();
-	}
-}
+ClassInstance AnyAsClassInstance(const boost::any& val);
 
 // Gets type of 'any' val
 // 0 -> int;  1 -> float;  2 -> bool;  3 -> string;  4 -> Sprite; 5 -> Vec2; 6 -> Text; 7 -> ClassInstance;
-int any_type(const boost::any& val)
-{
-	try // Try converting to int
-	{
-		int i = any_cast<int>(val);
-		return 0;
-	}
-	catch (boost::bad_any_cast)
-	{
-		try // Try converting to float
-		{
-			float f = any_cast<float>(val);
-			return 1;
-		}
-		catch (boost::bad_any_cast)
-		{
-			try // Try converting to bool
-			{
-				bool b = any_cast<bool>(val);
-				return 2;
-			}
-			catch (boost::bad_any_cast) // Try converting to string
-			{
-				try
-				{
-					string s = any_cast<string>(val);
-					return 3;
-				}
-				catch (boost::bad_any_cast) // Try converting to sprite
-				{
-					try
-					{
-						Sprite s = any_cast<Sprite>(val);
-						return 4;
-					}
-					catch (boost::bad_any_cast) // Try converting to Vec2
-					{
-						try
-						{
-							Vec2 v = any_cast<Vec2>(val);
-							return 5;
-						}
-						catch (boost::bad_any_cast) // Try converting to Text
-						{
-							try
-							{
-								Text t = any_cast<Text>(val);
-								return 6;
-							}
-							catch (boost::bad_any_cast) // Does not convert, return
-								try
-								{
-									ClassInstance ci = any_cast<ClassInstance>(val);
-									return 7;
-								}
-								catch (boost::bad_any_cast) // Does not convert, return
-								{
-#endif
+int any_type(const boost::any& val);
 
 // Gets type of 'any' val as string for runtime type checking
-string any_type_name(const boost::any& val)
-{
-	int typeNum = any_type(val);
-	switch (typeNum) {
-		case 0: return "int";
-		case 1: return "float";
-		case 2: return "bool";
-		case 3: return "string";
-		case 4: return "Sprite";
-		case 5: return "Vec2";
-		case 6: return "Text";
-		case 7: return "object";
-		case 8: 
-			try {
-				any_cast<ResultValue>(val);
-				return "Result";
-			} catch (...) {}
-			break;
-		case 9:
-			try {
-				any_cast<OptionValue>(val);
-				return "Option";
-			} catch (...) {}
-			break;
-		default: return "null";
-	}
-	return "null";
-}
+string any_type_name(const boost::any& val);
+
+#endif

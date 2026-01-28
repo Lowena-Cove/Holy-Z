@@ -1,9 +1,16 @@
 // system_control.cpp - Implementation of system and device control functions
 
+// Prevent std::byte conflict with Windows headers in C++17
+// Must be defined BEFORE any standard library headers are included
+#if defined(_WIN32) || defined(_WIN64)
+    #define _HAS_STD_BYTE 0
+#endif
+
 #include "system_control.h"
 #include <iostream>
 #include <sstream>
 #include <cstring>
+#include <algorithm>
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <windows.h>

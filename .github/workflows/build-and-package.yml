@@ -44,10 +44,12 @@ jobs:
       if: matrix.platform == 'windows'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: '8c8f4ff0e2e6ac1fce52f77a2c0c0bb4a5d55bf3'
+        vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+        vcpkgGitCommitId: 'c8696863d371ab7f46e213d8f5ca923c4aef2a00'
 
     - name: Install dependencies (Windows)
       if: matrix.platform == 'windows'
+      working-directory: HolyZ
       shell: pwsh
       run: |
         # Retry vcpkg install up to 3 times to handle network issues
@@ -103,7 +105,6 @@ jobs:
     - name: Package files (Linux)
       if: matrix.platform == 'linux'
       run: |
-        cp ZSharp/build/${{ matrix.executable }} package/
         cp HolyZ/build/${{ matrix.executable }} package/
         cp README.md package/
         cp LICENSE package/
@@ -112,7 +113,6 @@ jobs:
       if: matrix.platform == 'windows'
       shell: pwsh
       run: |
-        Copy-Item "ZSharp/build/Release/${{ matrix.executable }}" "package/"
         Copy-Item "HolyZ/build/Release/${{ matrix.executable }}" "package/"
         Copy-Item "README.md" "package/"
         Copy-Item "LICENSE" "package/"

@@ -17,14 +17,18 @@
 #include <algorithm>
 #include <unordered_map>
 #include <boost/any.hpp>
+#ifdef HOLYZ_GRAPHICS_ENABLED
 #include <SDL.h>
+#endif
 #include <ctime>
 #include <math.h>
 #include <sys/stat.h>
 #include <cstdlib> // for console command printing
 
 #include "strops.h"
+#ifdef HOLYZ_GRAPHICS_ENABLED
 #include "graphics.h"
+#endif
 #include "anyops.h"
 #if WINDOWS
 #include "color.hpp"
@@ -35,12 +39,35 @@
 using namespace std;
 using namespace boost;
 
-vector<string> types = { "int", "float", "string", "bool", "void", "null", "Sprite", "Vec2", "Text", "Result", "Option" };
+// ============================================================
+// Holy C / Zen-C Style Type Aliases
+// ============================================================
+// Inspired by Holy C's type system from TempleOS
+typedef void U0;           // Zero-size type (true void)
+typedef int8_t I8;         // 8-bit signed integer
+typedef uint8_t U8;        // 8-bit unsigned integer
+typedef int16_t I16;       // 16-bit signed integer
+typedef uint16_t U16;      // 16-bit unsigned integer
+typedef int32_t I32;       // 32-bit signed integer
+typedef uint32_t U32;      // 32-bit unsigned integer
+typedef int64_t I64;       // 64-bit signed integer
+typedef uint64_t U64;      // 64-bit unsigned integer
+typedef double F64;        // 64-bit floating point
+
+#ifdef HOLYZ_GRAPHICS_ENABLED
+vector<string> types = { "int", "float", "string", "bool", "void", "null", "Sprite", "Vec2", "Text", "Result", "Option", 
+                         "I8", "U8", "I16", "U16", "I32", "U32", "I64", "U64", "F64", "U0" };
+#else
+vector<string> types = { "int", "float", "string", "bool", "void", "null", "Result", "Option",
+                         "I8", "U8", "I16", "U16", "I32", "U32", "I64", "U64", "F64", "U0" };
+#endif
 // Forward declarations for Holy C classes
 class ClassDefinition;
 class ClassInstance;
 class ClassMethod;
 class ClassAttribute;
+class ResultValue;
+class OptionValue;
 
 // Global class definitions map
 extern unordered_map<string, ClassDefinition> globalClassDefinitions;
@@ -67,6 +94,8 @@ public:
 	ClassMethod() : isStatic(false) {}
 	ClassMethod(const string& n, const vector<string>& params, bool stat = false)
 		: name(n), parameters(params), isStatic(stat) {}
+	ClassMethod(const string& n, const vector<string>& params, const vector<vector<string>>& b, bool stat = false)
+		: name(n), parameters(params), body(b), isStatic(stat) {}
 };
 
 class ClassDefinition {
@@ -145,6 +174,134 @@ extern MemoryHeap globalMemoryHeap;
 // Global class definitions
 unordered_map<string, ClassDefinition> globalClassDefinitions;
 
+// Implementation of AnyAsClassInstance (defined after ClassInstance is complete)
+ClassInstance AnyAsClassInstance(const boost::any& val)
+{
+	if (any_null(val))
+		return ClassInstance();
+	try // Try converting to ClassInstance
+	{
+		return any_cast<ClassInstance>(val);
+	}
+	catch (boost::bad_any_cast)
+	{
+		LogWarning("invalid conversion to type 'ClassInstance'");
+		return ClassInstance();
+	}
+}
+
+// Compare two boost::any values for equality
+bool any_compare(const boost::any& a, const boost::any& b)
+{
+	// Handle null/empty cases
+	if (a.empty() && b.empty()) return true;
+	if (a.empty() || b.empty()) return false;
+	
+	// Try int comparison
+	try {
+		return any_cast<int>(a) == any_cast<int>(b);
+	} catch (boost::bad_any_cast) {}
+	
+	// Try float comparison
+	try {
+		return any_cast<float>(a) == any_cast<float>(b);
+	} catch (boost::bad_any_cast) {}
+	
+	// Try bool comparison
+	try {
+		return any_cast<bool>(a) == any_cast<bool>(b);
+	} catch (boost::bad_any_cast) {}
+	
+	// Try string comparison
+	try {
+		return any_cast<string>(a) == any_cast<string>(b);
+	} catch (boost::bad_any_cast) {}
+	
+	// Default: not equal if types don't match
+	return false;
+}
+
+int any_type(const boost::any& val)
+{
+	try // Try converting to int
+	{
+		int i = any_cast<int>(val);
+		return 0;
+	}
+	catch (boost::bad_any_cast)
+	{
+		try // Try converting to float
+		{
+			float f = any_cast<float>(val);
+			return 1;
+		}
+		catch (boost::bad_any_cast)
+		{
+			try // Try converting to bool
+			{
+				bool b = any_cast<bool>(val);
+				return 2;
+			}
+			catch (boost::bad_any_cast) // Try converting to string
+			{
+				try
+				{
+					string s = any_cast<string>(val);
+					return 3;
+				}
+				catch (boost::bad_any_cast) // Try converting to sprite
+				{
+#ifdef HOLYZ_GRAPHICS_ENABLED
+					try
+					{
+						Sprite s = any_cast<Sprite>(val);
+						return 4;
+					}
+					catch (boost::bad_any_cast) // Try converting to Vec2
+					{
+						try
+						{
+							Vec2 v = any_cast<Vec2>(val);
+							return 5;
+						}
+						catch (boost::bad_any_cast) // Try converting to Text
+						{
+							try
+							{
+								Text t = any_cast<Text>(val);
+								return 6;
+							}
+							catch (boost::bad_any_cast) // Try Class Instance
+							{
+								try
+								{
+									ClassInstance ci = any_cast<ClassInstance>(val);
+									return 7;
+								}
+								catch (boost::bad_any_cast) // Does not convert, return
+								{
+									return -1; // Unknown type
+								}
+							}
+						}
+					}
+#else
+					// Graphics disabled, try ClassInstance directly
+					try
+					{
+						ClassInstance ci = any_cast<ClassInstance>(val);
+						return 7;
+					}
+					catch (boost::bad_any_cast) // Does not convert, return
+					{
+						return -1; // Unknown type
+					}
+#endif
+				}
+			}
+		}
+	}
+}
 
 //unordered_map<string, vector<vector<string>>> builtinFunctionValues;
 //unordered_map<string, boost::any> builtinVarVals;
@@ -237,6 +394,37 @@ public:
 		return "None";
 	}
 };
+
+string any_type_name(const boost::any& val)
+{
+	int typeNum = any_type(val);
+	switch (typeNum) {
+		case 0: return "int";
+		case 1: return "float";
+		case 2: return "bool";
+		case 3: return "string";
+#ifdef HOLYZ_GRAPHICS_ENABLED
+		case 4: return "Sprite";
+		case 5: return "Vec2";
+		case 6: return "Text";
+#endif
+		case 7: return "object";
+		case 8: 
+			try {
+				any_cast<ResultValue>(val);
+				return "Result";
+			} catch (...) {}
+			break;
+		case 9:
+			try {
+				any_cast<OptionValue>(val);
+				return "Option";
+			} catch (...) {}
+			break;
+		default: return "null";
+	}
+	return "null";
+}
 
 // Trait support - improved trait system
 class TraitDefinition {
@@ -431,6 +619,7 @@ int LogCriticalError(const string& errorText)
 	return 2;
 }
 
+#ifdef HOLYZ_GRAPHICS_ENABLED
 boost::any GetClassSubComponent(boost::any value, string subComponentName)
 {
 	// If a Sprite Class
@@ -450,7 +639,14 @@ boost::any GetClassSubComponent(boost::any value, string subComponentName)
 	}
 	return nullType;
 }
+#else
+boost::any GetClassSubComponent(boost::any value, string subComponentName)
+{
+	return nullType;
+}
+#endif // HOLYZ_GRAPHICS_ENABLED
 
+#ifdef HOLYZ_GRAPHICS_ENABLED
 boost::any EditClassSubComponent(boost::any value, string oper, boost::any otherVal, string subComponentName)
 {
 	// If a Sprite Class
@@ -496,6 +692,12 @@ bool AxisAlignedCollision(const Sprite& a, const Sprite& b) // AABB - AABB colli
 	// collision only if on both axes
 	return collisionX && collisionY;
 }
+#else
+boost::any EditClassSubComponent(boost::any value, string oper, boost::any otherVal, string subComponentName)
+{
+	return nullType;
+}
+#endif // HOLYZ_GRAPHICS_ENABLED
 
 //// Initial script processing, which loads variables and functions from builtin
 //int GetBuiltins(std::string s)
@@ -597,6 +799,7 @@ boost::any ZSFunction(const string& name, const vector<boost::any>& args)
 		return lerp(AnyAsFloat(args.at(0)), AnyAsFloat(args.at(1)), AnyAsFloat(args.at(2)));
 	else if (name == "ZS.Math.Abs")
 		return abs(AnyAsFloat(args.at(0)));
+#ifdef HOLYZ_GRAPHICS_ENABLED
 	else if (name == "ZS.Graphics.Init")
 	{
 #if DEVELOPER_MESSAGES == true
@@ -658,15 +861,16 @@ boost::any ZSFunction(const string& name, const vector<boost::any>& args)
 	}
 	else if (name == "ZS.Input.GetKey")
 		return KEYS[StringRaw(any_cast<string>(args.at(0)))] == 1;
-	else if (name == "ZS.System.Print")
-		cout << StringRaw(AnyAsString(args.at(0)));
-	else if (name == "ZS.System.PrintLine")
-		cout << StringRaw(AnyAsString(args.at(0))) << endl;
 	else if (name == "ZS.System.Vec2")
 	{
 		Vec2 v(AnyAsFloat(args.at(0)), AnyAsFloat(args.at(1)));
 		return v;
 	}
+#endif // HOLYZ_GRAPHICS_ENABLED
+	else if (name == "ZS.System.Print")
+		cout << StringRaw(AnyAsString(args.at(0)));
+	else if (name == "ZS.System.PrintLine")
+		cout << StringRaw(AnyAsString(args.at(0))) << endl;
 	else if (name == "ZS.System.Command"){
 		string command = StringRaw(AnyAsString(args.at(0)));
 		//int command_len = command.length();
