@@ -49,6 +49,7 @@ jobs:
 
     - name: Install dependencies (Windows)
       if: matrix.platform == 'windows'
+      working-directory: HolyZ
       shell: pwsh
       run: |
         # Retry vcpkg install up to 3 times to handle network issues
