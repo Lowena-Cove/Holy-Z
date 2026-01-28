@@ -14,7 +14,7 @@ Holy-Z now includes features from multiple modern and classic systems programmin
 See [LANGUAGE_FEATURES.md](LANGUAGE_FEATURES.md) for detailed documentation on all language features.
 
 Before using Holy Z:
-There is ***no documentation***, ***strings*** barely work, ***performance*** isn't great, the syntax is ***very specific***, and most errors just cause it to ***crash without warning***. I am just a *single developer* working on this during my free time; between school, other projects, and YouTube. Holy Z will most likely never be finished, since it was really supposed to end when the video was published about it.
+There is ***no documentation***, ***strings*** barely work, ***performance*** isn't great, the syntax is ***very specific***, and most errors just cause it to ***crash without warning***.
 If you are trying to use a common programming language feature, ask yourself this: ***Is this feature required to play pong?*** If not, then most likely that feature ***has not been implemented yet***. I initially only made the language so I could create pong and make a video about it, so it really is the ***bare minimum***.
 
 ## Documentation and getting started:
