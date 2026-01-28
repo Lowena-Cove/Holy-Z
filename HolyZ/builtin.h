@@ -39,10 +39,27 @@
 using namespace std;
 using namespace boost;
 
+// ============================================================
+// Holy C / Zen-C Style Type Aliases
+// ============================================================
+// Inspired by Holy C's type system from TempleOS
+typedef void U0;           // Zero-size type (true void)
+typedef int8_t I8;         // 8-bit signed integer
+typedef uint8_t U8;        // 8-bit unsigned integer
+typedef int16_t I16;       // 16-bit signed integer
+typedef uint16_t U16;      // 16-bit unsigned integer
+typedef int32_t I32;       // 32-bit signed integer
+typedef uint32_t U32;      // 32-bit unsigned integer
+typedef int64_t I64;       // 64-bit signed integer
+typedef uint64_t U64;      // 64-bit unsigned integer
+typedef double F64;        // 64-bit floating point
+
 #ifdef HOLYZ_GRAPHICS_ENABLED
-vector<string> types = { "int", "float", "string", "bool", "void", "null", "Sprite", "Vec2", "Text", "Result", "Option" };
+vector<string> types = { "int", "float", "string", "bool", "void", "null", "Sprite", "Vec2", "Text", "Result", "Option", 
+                         "I8", "U8", "I16", "U16", "I32", "U32", "I64", "U64", "F64", "U0" };
 #else
-vector<string> types = { "int", "float", "string", "bool", "void", "null", "Result", "Option" };
+vector<string> types = { "int", "float", "string", "bool", "void", "null", "Result", "Option",
+                         "I8", "U8", "I16", "U16", "I32", "U32", "I64", "U64", "F64", "U0" };
 #endif
 // Forward declarations for Holy C classes
 class ClassDefinition;
